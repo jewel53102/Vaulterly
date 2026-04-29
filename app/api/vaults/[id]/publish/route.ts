@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { consumeRateLimit } from "@/app/lib/security/rateLimit";
-import { scoreVaultForSpam } from "@/applib/security/antiSpam";
+import { scoreVaultForSpam } from "@/app/lib/security/antiSpam";
 
 type RouteContext = {
   params: Promise<{ id: string }>;

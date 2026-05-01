@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import AppHeader from "@/app/components/AppHeader";
 import FollowButton from "@/app/components/FollowButton";
+import FeaturedVaultToggle from "@/app/components/FeaturedVaultToggle";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -11,6 +12,7 @@ type EntryRow = {
   title: string | null;
   url: string | null;
   description: string | null;
+  notes: string | null;
   created_at: string | null;
   entry_tags?: {
     tags?: TagShape;
@@ -61,13 +63,10 @@ function getEntryTagNames(entry: EntryRow): string[] {
     entry.entry_tags
       ?.flatMap((entryTag) => {
         const tags = entryTag.tags;
-
         if (!tags) return [];
-
         if (Array.isArray(tags)) {
           return tags.map((tag) => tag.name).filter(Boolean);
         }
-
         return tags.name ? [tags.name] : [];
       })
       .filter(Boolean) ?? []
@@ -100,6 +99,29 @@ function getAuthorName(
   return profile?.display_name?.trim() || "Vault Creator";
 }
 
+function vaultMatchesSearch(
+  vault: VaultRow,
+  searchTerm: string,
+  profileMap: Map<string, ProfileRow>
+) {
+  if (!searchTerm.trim()) return true;
+
+  const query = searchTerm.toLowerCase();
+
+  const authorName = getAuthorName(vault, profileMap);
+
+  const searchableText = [
+    vault.category,
+    authorName,
+    ...(vault.entries?.flatMap((entry) => getEntryTagNames(entry)) ?? []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  return searchableText.includes(query);
+}
+
 function AuthorFollowRow({
   vault,
   profileMap,
@@ -126,8 +148,15 @@ function AuthorFollowRow({
   );
 }
 
-export default async function ExplorePage() {
+export default async function ExplorePage({
+  searchParams,
+}: {
+  searchParams?: {
+    q?: string;
+  };
+}) {
   const supabase = await createClient();
+  const searchTerm = searchParams?.q?.trim() || "";
 
   const { data: vaultsData, error } = await supabase
     .from("vaults")
@@ -147,6 +176,7 @@ export default async function ExplorePage() {
         title,
         url,
         description,
+        notes,
         created_at,
         entry_tags (
           tags (
@@ -163,31 +193,37 @@ export default async function ExplorePage() {
     console.error("Explore page error:", error);
   }
 
-  const vaults = ((vaultsData ?? []) as unknown as VaultRow[]).filter(Boolean);
+  const allVaults = ((vaultsData ?? []) as unknown as VaultRow[]).filter(
+    Boolean
+  );
 
-  const authorIds = Array.from(
-    new Set(vaults.map((vault) => vault.user_id).filter(Boolean))
+  const allAuthorIds = Array.from(
+    new Set(allVaults.map((vault) => vault.user_id).filter(Boolean))
   ) as string[];
 
   let profileMap = new Map<string, ProfileRow>();
 
-  if (authorIds.length > 0) {
+  if (allAuthorIds.length > 0) {
     const { data: profilesData, error: profilesError } = await supabase
-  .from("profiles")
-  .select("id, display_name")
-  .in("id", authorIds);
+      .from("profiles")
+      .select("id, display_name")
+      .in("id", allAuthorIds);
 
     if (profilesError) {
       console.error("Explore profiles error:", profilesError);
     }
 
     profileMap = new Map(
-  ((profilesData ?? []) as ProfileRow[]).map((profile) => [
-    profile.id,
-    profile,
-  ])
-);
+      ((profilesData ?? []) as ProfileRow[]).map((profile) => [
+        profile.id,
+        profile,
+      ])
+    );
   }
+
+  const vaults = allVaults.filter((vault) =>
+    vaultMatchesSearch(vault, searchTerm, profileMap)
+  );
 
   const startHereVault = vaults.find((vault) =>
     getVaultName(vault).toLowerCase().includes("start here")
@@ -216,8 +252,8 @@ export default async function ExplorePage() {
               </h1>
 
               <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
-                Discover curated collections of tools, resources, and systems to help
-                you study smarter, stay organized, and get ahead.
+                Discover curated collections of tools, resources, and systems to
+                help you study smarter, stay organized, and get ahead.
               </p>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -239,7 +275,7 @@ export default async function ExplorePage() {
               </div>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-1">
+            <div className="flex flex-wrap gap-2">
               {categoryFilters.map((category) => (
                 <a
                   key={category}
@@ -248,7 +284,7 @@ export default async function ExplorePage() {
                       ? "#vaults"
                       : `#${getCategoryAnchor(category)}`
                   }
-                  className="whitespace-nowrap rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-100"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:text-slate-950"
                 >
                   {category}
                 </a>
@@ -257,33 +293,36 @@ export default async function ExplorePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          {featuredVault && (
-            <div className="mb-10 overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-6 shadow-sm sm:p-8">
-              <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-                <div>
-                  <span className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-700">
-                    ⭐ Featured Student Vault
-                  </span>
+        {featuredVault && (
+          <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <FeaturedVaultToggle>
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <div className="mb-4 inline-flex rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
+                Featured Vault
+              </div>
 
-                  <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">
+              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+                <div>
+                  <h2 className="text-3xl font-bold tracking-tight text-slate-950">
                     {getVaultName(featuredVault)}
                   </h2>
 
-                  <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-                    {featuredVault.description ||
-                      "A curated starter vault with the best resources for students."}
-                  </p>
+                  {featuredVault.description && (
+                    <p className="mt-3 text-base leading-7 text-slate-600">
+                      {featuredVault.description}
+                    </p>
+                  )}
 
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 shadow-sm">
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Link
+                      href={`/vaults/${featuredVault.id}`}
+                      className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+                    >
+                      Open Vault
+                    </Link>
+
+                    <span className="inline-flex items-center rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
                       {getVaultCategory(featuredVault)}
-                    </span>
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 shadow-sm">
-                      Public Vault
-                    </span>
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 shadow-sm">
-                      Student Starter Pack
                     </span>
                   </div>
 
@@ -291,213 +330,196 @@ export default async function ExplorePage() {
                     vault={featuredVault}
                     profileMap={profileMap}
                   />
-
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href={`/vaults/${featuredVault.id}`}
-                      className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
-                    >
-                      View Vault
-                    </Link>
-
-                    <Link
-                      href={`/vaults/${featuredVault.id}`}
-                      className="inline-flex items-center justify-center rounded-xl border border-indigo-200 bg-white px-5 py-3 text-sm font-semibold text-indigo-700 shadow-sm transition hover:bg-indigo-50"
-                    >
-                      Copy to My Vaults
-                    </Link>
-                  </div>
-                  <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-                    <b>*Pro Tip:</b> Copy this vault to your private vaults to keep
-                    these guides handy.
-                  </p>
                 </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-500">
                     Inside this vault
-                  </p>
+                  </h3>
 
-                  <div className="space-y-3">
+                  <div className="mt-4 space-y-3">
                     {getVaultPreviewEntries(featuredVault).length > 0 ? (
                       getVaultPreviewEntries(featuredVault).map((entry) => (
-                        <div
+                        <Link
                           key={entry.id}
-                          className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+                          href={`/entry/${entry.id}/edit`}
+                          className="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-indigo-300 hover:bg-indigo-50"
                         >
-                          <p className="font-semibold text-blue-500">
-                            {entry.title || "Untitled Resource"}
+                          <p className="text-lg font-semibold text-indigo-600">
+                            {entry.title || "Untitled Entry"}
                           </p>
 
                           {entry.description && (
-                            <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600">
+                            <p className="mt-2 line-clamp-2 text-sm text-slate-600">
                               {entry.description}
+                            </p>
+                          )}
+
+                          {entry.notes && (
+                            <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+                              {entry.notes}
                             </p>
                           )}
 
                           {getEntryTagNames(entry).length > 0 && (
                             <div className="mt-3 flex flex-wrap gap-2">
-                              {getEntryTagNames(entry)
-                                .slice(0, 3)
-                                .map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="rounded-full bg-white px-2 py-1 text-xs font-medium text-slate-600"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
+                              {getEntryTagNames(entry).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
                             </div>
                           )}
-                        </div>
+                        </Link>
                       ))
                     ) : (
                       <p className="text-sm text-slate-500">
-                        Open this vault to view the resources inside.
+                        No entries have been added yet.
                       </p>
                     )}
                   </div>
                 </div>
               </div>
             </div>
-          )}
+            </FeaturedVaultToggle>
+          </section>
+        )}
 
-          <div id="vaults" className="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-950">
-                Trending Vaults
-              </h2>
-              <p className="mt-1 text-sm text-slate-600">
-                Browse curated student resources, tools, and systems.
-              </p>
-            </div>
+        <section
+          id="vaults"
+          className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
+        >
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+              Browse public vaults
+            </h2>
+
+            <p className="mt-2 text-slate-600">
+              Search by category, tag, or author, then click any vault to view
+              the full collection.
+            </p>
+
+            <form action="/explore" className="mt-5 max-w-2xl">
+              <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row">
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={searchTerm}
+                  placeholder="Search by category, tag, or author..."
+                  className="min-h-[48px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                />
+
+                <button
+                  type="submit"
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                >
+                  Search
+                </button>
+
+                {searchTerm ? (
+                  <Link
+                    href="/explore"
+                    className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
+                  >
+                    Clear
+                  </Link>
+                ) : null}
+              </div>
+
+              {searchTerm ? (
+                <p className="mt-3 text-sm text-slate-600">
+                  Showing {vaults.length} result
+                  {vaults.length === 1 ? "" : "s"} for{" "}
+                  <span className="font-semibold text-slate-950">
+                    “{searchTerm}”
+                  </span>
+                </p>
+              ) : null}
+            </form>
           </div>
 
-          {vaults.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-              <h2 className="text-xl font-semibold text-blue-500">
-                No public vaults yet
-              </h2>
-              <p className="mt-2 text-slate-600">
-                Public vaults will appear here once they are created.
-              </p>
-            </div>
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {remainingVaults.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {remainingVaults.map((vault, index) => (
                 <article
                   key={vault.id}
-                  className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  id={getCategoryAnchor(getVaultCategory(vault))}
+                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
                 >
                   <div className="mb-4 flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
                       {getBadge(vault, index)}
                     </span>
 
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
                       {getVaultCategory(vault)}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-bold leading-7 text-blue-500">
-                    {getVaultName(vault)}
-                  </h3>
+                  <Link href={`/vaults/${vault.id}`} className="group">
+                    <h3 className="text-xl font-bold text-slate-950 group-hover:text-indigo-700">
+                      {getVaultName(vault)}
+                    </h3>
 
-                  <p className="mt-2 line-clamp-2 min-h-[48px] text-sm leading-6 text-slate-600">
-                    {vault.description ||
-                      "A curated collection of useful student resources."}
-                  </p>
-
-                  <div className="mt-5 flex-1 space-y-2">
-                    {getVaultPreviewEntries(vault).length > 0 ? (
-                      getVaultPreviewEntries(vault).map((entry) => (
-                        <div
-                          key={entry.id}
-                          className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2"
-                        >
-                          <p className="line-clamp-1 text-sm font-medium text-slate-900">
-                            {entry.title || "Untitled Resource"}
-                          </p>
-
-                          {entry.description && (
-                            <p className="mt-1 line-clamp-1 text-xs text-slate-500">
-                              {entry.description}
-                            </p>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-3 text-sm text-slate-500">
-                        Open this vault to view resources.
+                    {vault.description && (
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                        {vault.description}
                       </p>
                     )}
+                  </Link>
+
+                  <div className="mt-5 space-y-3">
+                    {getVaultPreviewEntries(vault).map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                      >
+                        <p className="font-semibold text-indigo-600">
+                          {entry.title || "Untitled Entry"}
+                        </p>
+
+                      </div>
+                    ))}
                   </div>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-                      Public
-                    </span>
-
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-                      Student
-                    </span>
-
-                    {getVaultPreviewEntries(vault)
-                      .flatMap(getEntryTagNames)
-                      .slice(0, 2)
-                      .map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                  <div className="mt-5">
+                    <Link
+                      href={`/vaults/${vault.id}`}
+                      className="inline-flex text-sm font-semibold text-slate-950 hover:text-indigo-700 hover:underline"
+                    >
+                      View full vault →
+                    </Link>
                   </div>
 
                   <AuthorFollowRow vault={vault} profileMap={profileMap} />
-
-                  <Link
-                    href={`/vaults/${vault.id}`}
-                    className="mt-5 inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
-                  >
-                    View Vault
-                  </Link>
                 </article>
               ))}
             </div>
+          ) : (
+            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
+              <h3 className="text-lg font-semibold text-slate-950">
+                {searchTerm ? "No matching vaults found" : "No public vaults yet"}
+              </h3>
+
+              <p className="mt-2 text-slate-600">
+                {searchTerm
+                  ? "Try searching for a different category, tag, or author."
+                  : "Public vaults will appear here once they are published."}
+              </p>
+
+              {searchTerm ? (
+                <Link
+                  href="/explore"
+                  className="mt-5 inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                >
+                  Clear search
+                </Link>
+              ) : null}
+            </div>
           )}
-        </section>
-
-        <section className="border-y border-slate-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-8 text-center sm:px-6 lg:px-8">
-            <p className="text-lg font-semibold text-blue-500">
-              Join students organizing useful links, tools, and resources in one place.
-            </p>
-            <p className="mt-2 text-sm text-slate-600">
-              Stop losing helpful resources. Save them into vaults you can actually use.
-            </p>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-slate-950 p-8 text-center shadow-sm">
-            <h2 className="text-2xl font-bold tracking-tight text-white">
-              Stop losing links. Start building your system.
-            </h2>
-
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-              Create your first vault, save your best resources, and keep everything
-              organized in one place.
-            </p>
-
-            <Link
-              href="/dashboard"
-              className="mt-6 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-blue-500 transition hover:bg-slate-100"
-            >
-              Create Your First Vault
-            </Link>
-          </div>
         </section>
       </main>
     </>

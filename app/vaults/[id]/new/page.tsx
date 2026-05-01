@@ -15,6 +15,7 @@ export default function NewEntryPage() {
 
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [tags, setTags] = useState("");
   const [notes, setNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,18 +36,78 @@ export default function NewEntryPage() {
       return;
     }
 
-    const { error: insertError } = await supabase.from("entries").insert({
-      vault_id: vaultId,
-      user_id: user.id,
-      title: title.trim(),
-      url: url.trim() || null,
-      notes: notes.trim() || null,
-    });
+    const { data: newEntry, error: insertError } = await supabase
+      .from("entries")
+      .insert({
+        vault_id: vaultId,
+        user_id: user.id,
+        title: title.trim(),
+        url: url.trim() || null,
+        notes: notes.trim() || null,
+      })
+      .select("id")
+      .single();
 
-    if (insertError) {
-      setErrorMessage(insertError.message);
+    if (insertError || !newEntry) {
+      setErrorMessage(insertError?.message || "Could not create entry.");
       setIsSaving(false);
       return;
+    }
+
+    const cleanedTags = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+
+    if (cleanedTags.length > 0) {
+      for (const tagName of cleanedTags) {
+        const { data: existingTag, error: existingTagError } = await supabase
+          .from("tags")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("name", tagName)
+          .maybeSingle();
+
+        if (existingTagError) {
+          setErrorMessage(existingTagError.message);
+          setIsSaving(false);
+          return;
+        }
+
+        let tagId = existingTag?.id;
+
+        if (!tagId) {
+          const { data: createdTag, error: tagError } = await supabase
+            .from("tags")
+            .insert({
+              user_id: user.id,
+              name: tagName,
+            })
+            .select("id")
+            .single();
+
+          if (tagError || !createdTag) {
+            setErrorMessage(tagError?.message || "Could not create tag.");
+            setIsSaving(false);
+            return;
+          }
+
+          tagId = createdTag.id;
+        }
+
+        const { error: entryTagError } = await supabase
+          .from("entry_tags")
+          .insert({
+            entry_id: newEntry.id,
+            tag_id: tagId,
+          });
+
+        if (entryTagError) {
+          setErrorMessage(entryTagError.message);
+          setIsSaving(false);
+          return;
+        }
+      }
     }
 
     router.push(`/vaults/${vaultId}`);
@@ -101,6 +162,18 @@ export default function NewEntryPage() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://example.com"
+                className="vault-input"
+              />
+            </Field>
+
+            <Field
+              label="Tags"
+              help="Optional. Separate tags with commas, like: Research, Writing, School"
+            >
+              <input
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="Research, Writing, School"
                 className="vault-input"
               />
             </Field>

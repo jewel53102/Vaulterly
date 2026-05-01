@@ -6,6 +6,12 @@ import { useParams, useRouter } from "next/navigation";
 import AppHeader from "@/app/components/AppHeader";
 import { createClient } from "@/app/lib/supabase/client";
 
+type EntryTagRow = {
+  tags: {
+    name: string | null;
+  } | null;
+};
+
 export default function EditEntryPage() {
   const router = useRouter();
   const params = useParams();
@@ -16,6 +22,7 @@ export default function EditEntryPage() {
   const [vaultId, setVaultId] = useState("");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [tags, setTags] = useState("");
   const [notes, setNotes] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
@@ -54,9 +61,25 @@ export default function EditEntryPage() {
         return;
       }
 
+      const { data: tagRows, error: tagsError } = await supabase
+        .from("entry_tags")
+        .select("tags(name)")
+        .eq("entry_id", entryId);
+
+      if (tagsError) {
+        setErrorMessage(tagsError.message);
+        setIsLoading(false);
+        return;
+      }
+
+      const tagNames = ((tagRows || []) as unknown as EntryTagRow[])
+        .map((row) => row.tags?.name)
+        .filter((tagName): tagName is string => Boolean(tagName));
+
       setVaultId(entry.vault_id);
       setTitle(entry.title || "");
       setUrl(entry.url || "");
+      setTags(tagNames.join(", "));
       setNotes(entry.notes || "");
       setIsLoading(false);
     }
@@ -96,6 +119,77 @@ export default function EditEntryPage() {
       return;
     }
 
+    const cleanedTags = Array.from(
+      new Set(
+        tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+      )
+    );
+
+    const { error: deleteExistingTagsError } = await supabase
+      .from("entry_tags")
+      .delete()
+      .eq("entry_id", entryId);
+
+    if (deleteExistingTagsError) {
+      setErrorMessage(deleteExistingTagsError.message);
+      setIsSaving(false);
+      return;
+    }
+
+    if (cleanedTags.length > 0) {
+      for (const tagName of cleanedTags) {
+        const { data: existingTag, error: existingTagError } = await supabase
+          .from("tags")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("name", tagName)
+          .maybeSingle();
+
+        if (existingTagError) {
+          setErrorMessage(existingTagError.message);
+          setIsSaving(false);
+          return;
+        }
+
+        let tagId = existingTag?.id;
+
+        if (!tagId) {
+          const { data: createdTag, error: tagError } = await supabase
+            .from("tags")
+            .insert({
+              user_id: user.id,
+              name: tagName,
+            })
+            .select("id")
+            .single();
+
+          if (tagError || !createdTag) {
+            setErrorMessage(tagError?.message || "Could not create tag.");
+            setIsSaving(false);
+            return;
+          }
+
+          tagId = createdTag.id;
+        }
+
+        const { error: entryTagError } = await supabase
+          .from("entry_tags")
+          .insert({
+            entry_id: entryId,
+            tag_id: tagId,
+          });
+
+        if (entryTagError) {
+          setErrorMessage(entryTagError.message);
+          setIsSaving(false);
+          return;
+        }
+      }
+    }
+
     router.push(vaultId ? `/vaults/${vaultId}` : "/dashboard");
     router.refresh();
   }
@@ -120,6 +214,8 @@ export default function EditEntryPage() {
       setIsDeleting(false);
       return;
     }
+
+    await supabase.from("entry_tags").delete().eq("entry_id", entryId);
 
     const { error: deleteError } = await supabase
       .from("entries")
@@ -174,7 +270,7 @@ export default function EditEntryPage() {
             <h1 className="vault-heading">Update saved item</h1>
 
             <p className="vault-body">
-              Edit the title, link, or notes for this saved entry.
+              Edit the title, link, tags, or notes for this saved entry.
             </p>
           </section>
 
@@ -203,6 +299,18 @@ export default function EditEntryPage() {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://example.com"
+                className="vault-input"
+              />
+            </Field>
+
+            <Field
+              label="Tags"
+              help="Optional. Separate tags with commas, like: Research, Writing, School"
+            >
+              <input
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                placeholder="Research, Writing, School"
                 className="vault-input"
               />
             </Field>

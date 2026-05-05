@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import AppHeader from "@/app/components/AppHeader";
-import { createClient } from "@/app/lib/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 export default function EditVaultPage() {
   const router = useRouter();

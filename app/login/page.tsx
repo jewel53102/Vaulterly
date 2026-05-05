@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/app/lib/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -64,141 +64,78 @@ export default function LoginPage() {
   }
 
   return (
-    <main style={pageStyle}>
-      <div style={containerStyle}>
-        <section style={cardStyle}>
-          <h1 style={headingStyle}>Log in</h1>
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
+          <Link href="/" className="text-xl font-bold text-slate-950">
+            Vaulterly
+          </Link>
+        </div>
 
-          <p style={bodyStyle}>
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950">
+            Log in
+          </h1>
+
+          <p className="mt-2 text-sm leading-6 text-slate-600">
             Welcome back. Log in to continue building your vaults.
           </p>
 
-          {errorMessage && <div style={errorStyle}>{errorMessage}</div>}
+          {errorMessage && (
+            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {errorMessage}
+            </div>
+          )}
 
-          <form onSubmit={handleLogin}>
-            <div style={{ marginBottom: "18px" }}>
-              <label style={labelStyle}>Email</label>
+          <form onSubmit={handleLogin} className="mt-6 space-y-4">
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-slate-700">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                style={inputStyle}
+                placeholder="you@example.com"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
               />
             </div>
 
-            <div style={{ marginBottom: "24px" }}>
-              <label style={labelStyle}>Password</label>
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-slate-700">
+                Password
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                style={inputStyle}
+                placeholder="Your password"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              style={{
-                ...primaryButtonStyle,
-                opacity: isLoading ? 0.6 : 1,
-                cursor: isLoading ? "not-allowed" : "pointer",
-              }}
+              className="w-full rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isLoading ? "Logging in..." : "Log in"}
             </button>
           </form>
 
-          <p style={{ marginTop: "20px", color: "#57534e" }}>
-            Don’t have an account?{" "}
-            <Link href="/signup" style={{ color: "#92400e", fontWeight: 700 }}>
+          <p className="mt-6 text-sm text-slate-600">
+            Don't have an account?{" "}
+            <Link
+              href="/signup"
+              className="font-semibold text-indigo-600 hover:underline"
+            >
               Sign up
             </Link>
           </p>
-        </section>
+        </div>
       </div>
     </main>
   );
 }
-
-const pageStyle: React.CSSProperties = {
-  minHeight: "100vh",
-  background: "#f8f5ee",
-  padding: "40px 20px",
-  color: "#1c1917",
-  fontFamily:
-    "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
-};
-
-const containerStyle: React.CSSProperties = {
-  maxWidth: "520px",
-  margin: "0 auto",
-};
-
-const cardStyle: React.CSSProperties = {
-  background: "#ffffff",
-  border: "1px solid #e7e0d6",
-  borderRadius: "28px",
-  padding: "32px",
-  boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-};
-
-const headingStyle: React.CSSProperties = {
-  fontSize: "40px",
-  lineHeight: "1.1",
-  margin: 0,
-  color: "#1c1917",
-  fontWeight: 800,
-};
-
-const bodyStyle: React.CSSProperties = {
-  marginTop: "12px",
-  marginBottom: "24px",
-  fontSize: "16px",
-  lineHeight: "1.6",
-  color: "#57534e",
-};
-
-const labelStyle: React.CSSProperties = {
-  display: "block",
-  marginBottom: "8px",
-  fontSize: "14px",
-  fontWeight: 700,
-  color: "#292524",
-};
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  boxSizing: "border-box",
-  border: "1px solid #ddd6ce",
-  background: "#fafaf9",
-  color: "#1c1917",
-  borderRadius: "16px",
-  padding: "14px 16px",
-  fontSize: "15px",
-  outline: "none",
-};
-
-const primaryButtonStyle: React.CSSProperties = {
-  width: "100%",
-  border: "none",
-  background: "#1c1917",
-  color: "#ffffff",
-  padding: "14px 24px",
-  borderRadius: "999px",
-  fontSize: "14px",
-  fontWeight: 700,
-};
-
-const errorStyle: React.CSSProperties = {
-  marginBottom: "20px",
-  border: "1px solid #fecaca",
-  background: "#fef2f2",
-  color: "#b91c1c",
-  padding: "12px 16px",
-  borderRadius: "16px",
-  fontSize: "14px",
-  fontWeight: 600,
-};

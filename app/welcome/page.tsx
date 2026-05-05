@@ -171,104 +171,141 @@ export default function WelcomePage() {
   }
 
   return (
-    <main className="auth-page">
-      <div className="auth-shell auth-shell-single">
-        <section className="auth-panel auth-panel-form auth-panel-form-full">
-          <div className="auth-card">
-            <div className="auth-card-header">
-              <p className="eyebrow">New Vault</p>
-              <h2>Create your vault</h2>
-              <p>
-                Start a collection for links, notes, tools, ideas, research, or anything worth saving.
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
+      <div className="w-full max-w-xl">
+        <div className="mb-8">
+          <Link href="/" className="text-xl font-bold text-slate-950">
+            Vaulterly
+          </Link>
+        </div>
+
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-indigo-600">
+            New Vault
+          </p>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-950">
+            Create your vault
+          </h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Start a collection for links, notes, tools, ideas, research, or
+            anything worth saving.
+          </p>
+
+          <form className="mt-6 space-y-5" onSubmit={handleCreateVault}>
+            <div>
+              <label
+                htmlFor="name"
+                className="mb-1.5 block text-sm font-semibold text-slate-700"
+              >
+                Vault Name
+              </label>
+              <input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Example: AI Tools, Marketing Ideas, Recipes"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="category"
+                className="mb-1.5 block text-sm font-semibold text-slate-700"
+              >
+                Category
+              </label>
+              <input
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Example: Business, Recipes, AI Tools, Research"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              />
+              <p className="mt-1.5 text-xs text-slate-500">
+                Categories help organize your dashboard.
               </p>
             </div>
 
-            <form className="auth-form" onSubmit={handleCreateVault}>
-              <div className="form-group">
-                <label htmlFor="name">Vault Name</label>
-                <input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Example: AI Tools, Marketing Ideas, Recipes"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="category">Category</label>
-                <input
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Example: Business, Recipes, AI Tools, Research"
-                />
-
-                <p className="account-help-text">
-                  Categories help organize your dashboard.
-                </p>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What will this vault be used for?"
-                  rows={4}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="tags">Vault Tags</label>
-                <input
-                  id="tags"
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  placeholder="ai, business, marketing, recipes"
-                />
-
-                <p className="account-help-text">
-                  Separate tags with commas. Tags help people find your public vaults and help you filter your dashboard.
-                </p>
-              </div>
-
-              <div className="toggle-row">
-                <div>
-                  <p className="toggle-label">Make this vault public</p>
-                  <p className="toggle-help">
-                    Public vaults can appear on Explore and your public profile.
-                  </p>
-                </div>
-
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={isPublic}
-                    onChange={(e) => setIsPublic(e.target.checked)}
-                  />
-                  <span className="switch-slider" />
-                </label>
-              </div>
-
-              {message ? (
-                <p className="form-message form-message-error">{message}</p>
-              ) : null}
-
-              <button
-                type="submit"
-                disabled={saving}
-                className="button button-primary auth-submit"
+            <div>
+              <label
+                htmlFor="description"
+                className="mb-1.5 block text-sm font-semibold text-slate-700"
               >
-                {saving ? 'Creating...' : 'Create Vault'}
-              </button>
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="What will this vault be used for?"
+                rows={4}
+                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              />
+            </div>
 
-              <Link href="/dashboard" className="button button-secondary auth-submit">
-                Cancel
-              </Link>
-            </form>
-          </div>
-        </section>
+            <div>
+              <label
+                htmlFor="tags"
+                className="mb-1.5 block text-sm font-semibold text-slate-700"
+              >
+                Vault Tags
+              </label>
+              <input
+                id="tags"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                placeholder="ai, business, marketing, recipes"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              />
+              <p className="mt-1.5 text-xs text-slate-500">
+                Separate tags with commas. Tags help people find your public
+                vaults and help you filter your dashboard.
+              </p>
+            </div>
+
+            <div className="flex items-start justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div>
+                <p className="text-sm font-semibold text-slate-900">
+                  Make this vault public
+                </p>
+                <p className="mt-0.5 text-xs text-slate-500">
+                  Public vaults can appear on Explore and your public profile.
+                </p>
+              </div>
+              <label className="relative mt-0.5 inline-flex cursor-pointer items-center">
+                <input
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={(e) => setIsPublic(e.target.checked)}
+                  className="peer sr-only"
+                />
+                <div className="peer h-6 w-11 rounded-full bg-slate-300 transition after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-5" />
+              </label>
+            </div>
+
+            {message && (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                {message}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? 'Creating...' : 'Create Vault'}
+            </button>
+
+            <Link
+              href="/dashboard"
+              className="block w-full rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
+            >
+              Cancel
+            </Link>
+          </form>
+        </div>
       </div>
     </main>
   )

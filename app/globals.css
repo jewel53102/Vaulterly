@@ -80,8 +80,7 @@ img {
 }
 
 .page-shell,
-.dashboard-page,
-.auth-page {
+.dashboard-page {
   min-height: 100vh;
 }
 
@@ -220,8 +219,7 @@ img {
 }
 
 .brand,
-.app-header-brand,
-.auth-brand {
+.app-header-brand {
   display: flex;
   align-items: center;
   gap: 0.875rem;
@@ -748,7 +746,6 @@ img {
 
 /* ---------- Auth / Welcome ---------- */
 
-.auth-page,
 .account-page {
   min-height: 100vh;
   padding: 2rem 0;
@@ -758,146 +755,26 @@ img {
     var(--color-bg);
 }
 
-.auth-shell {
-  width: min(1180px, calc(100% - 2rem));
-  min-height: calc(100vh - 4rem);
-  display: grid;
-  grid-template-columns: 1fr 520px;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: 32px;
-  background: #ffffff;
-  box-shadow: var(--shadow-md);
-}
-
-.auth-shell-single {
-  grid-template-columns: 1fr;
-  max-width: 700px;
-}
-
-.auth-panel {
-  padding: 3rem;
-}
-
-.auth-panel-brand {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-  border-right: 1px solid var(--color-border);
-  background:
-    linear-gradient(180deg, rgba(13, 27, 42, 0.02), rgba(13, 27, 42, 0.01)),
-    var(--color-bg);
-}
-
-.auth-panel-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fcfdff;
-}
-
-.auth-panel-form-full {
-  min-height: 320px;
-}
-
-.auth-card {
-  width: 100%;
-  max-width: 400px;
-}
-
-.auth-brand-tag,
-.auth-card-header p:last-child,
-.auth-lead,
-.auth-benefits li,
-.account-help-text,
-.toggle-help {
+.account-help-text {
   color: var(--color-text-soft);
 }
 
-.auth-brand-tag {
-  margin: 0.25rem 0 0;
-  font-size: 0.92rem;
-}
-
-.auth-copy {
-  max-width: 520px;
-}
-
-.auth-copy h1 {
-  max-width: 11ch;
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 4.8vw, 4rem);
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.auth-lead {
-  max-width: 56ch;
-  margin: 1.25rem 0 0;
-  font-size: 1.05rem;
-}
-
-.auth-benefits {
-  display: grid;
-  gap: 0.9rem;
-  margin: 2rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.auth-benefits li {
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.auth-benefits li::before {
-  content: "";
-  position: absolute;
-  top: 0.52rem;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--color-accent);
-}
-
-.auth-card-header {
-  margin-bottom: 1.5rem;
-}
-
-.auth-card-header h2,
-.account-header h1,
-.entry-form-header h1 {
+.account-header h1 {
   margin: 0.2rem 0 0;
   font-family: var(--font-heading);
   letter-spacing: -0.04em;
 }
 
-.auth-card-header h2 {
-  font-size: 2rem;
-}
-
-.auth-card-header p:last-child {
-  margin: 0.8rem 0 0;
-}
-
-.auth-form,
-.entry-form,
 .account-form-section {
   display: grid;
   gap: 1rem;
 }
 
-.form-group,
 .account-field {
   display: grid;
   gap: 0.45rem;
 }
 
-.form-group label,
 .account-field label,
 .save-entry-label,
 .explore-filter-label {
@@ -905,18 +782,6 @@ img {
   font-weight: 800;
 }
 
-.form-label-row,
-.toggle-row,
-.dashboard-selected-tag-row,
-.dashboard-tag-empty-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.form-group input,
-.form-group textarea,
 .account-field input,
 .account-field textarea,
 .vault-search-input,
@@ -937,7 +802,6 @@ img {
     background-color 0.18s ease;
 }
 
-.form-group input,
 .account-field input,
 .vault-search-input,
 .explore-search-input,
@@ -949,22 +813,17 @@ img {
   padding: 0 1rem;
 }
 
-.form-group textarea,
 .account-field textarea {
   min-height: 120px;
   padding: 0.9rem 1rem;
   resize: vertical;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder,
 .account-field input::placeholder,
 .account-field textarea::placeholder {
   color: #96a0ad;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
 .account-field input:focus,
 .account-field textarea:focus,
 .vault-search-input:focus,
@@ -977,45 +836,6 @@ img {
   box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.12);
 }
 
-.auth-submit,
-.auth-social {
-  width: 100%;
-}
-
-.auth-divider {
-  position: relative;
-  margin: 1.35rem 0;
-  text-align: center;
-}
-
-.auth-divider::before {
-  content: "";
-  position: absolute;
-  inset: 50% 0 auto 0;
-  z-index: 0;
-  border-top: 1px solid var(--color-border);
-}
-
-.auth-divider span {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
-  padding: 0 0.85rem;
-  background: #fcfdff;
-  color: var(--color-text-soft);
-  letter-spacing: 0.08em;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.auth-footer-text {
-  margin: 1.2rem 0 0;
-  text-align: center;
-  color: var(--color-text-soft);
-  font-size: 0.95rem;
-}
-
-.auth-inline-link,
 .entry-back-link,
 .explore-creator-link,
 .profile-website-link {
@@ -1023,7 +843,6 @@ img {
   font-weight: 800;
 }
 
-.auth-inline-link:hover,
 .entry-back-link:hover,
 .explore-creator-link:hover,
 .profile-website-link:hover {
@@ -1032,94 +851,6 @@ img {
 
 .small-link {
   font-size: 0.88rem;
-}
-
-.form-message {
-  margin: 0;
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  font-size: 0.92rem;
-}
-
-.form-message-error {
-  border: 1px solid var(--color-danger-border);
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
-}
-
-.form-message-success {
-  border: 1px solid #abefc6;
-  background: #ecfdf3;
-  color: #027a48;
-}
-
-.optional-label {
-  color: var(--color-text-soft);
-  font-weight: 400;
-}
-
-.toggle-row {
-  padding: 1rem 1rem 1rem 1.1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 18px;
-  background: #ffffff;
-}
-
-.toggle-label {
-  display: block;
-  margin: 0;
-  color: var(--color-primary);
-  font-weight: 800;
-}
-
-.toggle-help {
-  margin: 0.35rem 0 0;
-  font-size: 0.92rem;
-}
-
-.switch {
-  position: relative;
-  display: inline-flex;
-  width: 56px;
-  height: 32px;
-  flex: 0 0 auto;
-}
-
-.switch input {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-}
-
-.switch-slider {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: #d8dee6;
-  cursor: pointer;
-  transition: background 0.18s ease;
-}
-
-.switch-slider::before {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(13, 27, 42, 0.15);
-  transition: transform 0.18s ease;
-}
-
-.switch input:checked + .switch-slider {
-  background: var(--color-accent);
-}
-
-.switch input:checked + .switch-slider::before {
-  transform: translateX(24px);
 }
 
 /* ---------- Dashboard / Vault Cards ---------- */
@@ -2127,20 +1858,6 @@ img {
   }
 }
 
-@media (max-width: 980px) {
-  .auth-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-panel-brand {
-    border-right: 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .auth-copy h1 {
-    max-width: 100%;
-  }
-}
 
 @media (max-width: 860px) {
   .profile-hero-card {
@@ -2252,25 +1969,13 @@ img {
 }
 
 @media (max-width: 640px) {
-  .auth-page,
   .account-page {
     padding: 1rem 0 2.5rem;
   }
 
-  .auth-shell {
-    width: min(100%, calc(100% - 1rem));
-    min-height: auto;
-    border-radius: 24px;
-  }
-
-  .auth-panel,
   .account-card,
   .entry-form-card {
     padding: 1.25rem;
-  }
-
-  .auth-card-header h2 {
-    font-size: 1.7rem;
   }
 
   .app-header-inner {
@@ -2308,11 +2013,8 @@ img {
   .dashboard-top,
   .vault-header,
   .entry-card,
-  .toggle-row,
   .dashboard-following-header,
   .onboarding-card-top,
-  .dashboard-selected-tag-row,
-  .dashboard-tag-empty-row,
   .explore-filter-card,
   .following-card,
   .account-avatar-row {
@@ -2372,20 +2074,9 @@ img {
     white-space: normal;
   }
 
-  .entry-form-header h1 {
-    font-size: 1.85rem;
-    line-height: 1.08;
-  }
-
-  .form-group input,
-  .form-group textarea,
   .account-field input,
   .account-field textarea {
     font-size: 1rem;
-  }
-
-  .switch {
-    align-self: flex-start;
   }
 
   .explore-tabs {
@@ -2499,17 +2190,6 @@ img {
     padding: 0.85rem;
   }
 
-  .auth-panel {
-    padding: 1.15rem;
-  }
-
-  .auth-copy h1 {
-    font-size: 2.15rem;
-  }
-
-  .auth-card-header h2 {
-    font-size: 1.55rem;
-  }
 }
 
 .vault-category-row {

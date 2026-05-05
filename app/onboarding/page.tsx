@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AppHeader from "@/app/components/AppHeader";
-import { createClient } from "@/app/lib/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 type StarterVault = {
   id: "exam" | "internship" | "semester";
@@ -167,12 +167,9 @@ export default function OnboardingPage() {
       .insert({
         user_id: user.id,
         name: selectedVault.title,
-        title: selectedVault.title,
         description: selectedVault.description,
         category: selectedVault.category,
-        tags: selectedVault.tags,
         is_public: false,
-        public_status: "private",
       })
       .select("id")
       .single();
@@ -181,6 +178,47 @@ export default function OnboardingPage() {
       setErrorMessage(vaultError?.message ?? "Could not create your vault.");
       setIsSaving(false);
       return;
+    }
+
+    // Write tags through vault_tags junction table — same strategy as /welcome
+    const resolvedTags: { id: string; name: string }[] = [];
+
+    for (const tagName of selectedVault.tags) {
+      const cleanedTag = tagName.trim().toLowerCase();
+
+      const { data: upsertedTag } = await supabase
+        .from("tags")
+        .upsert(
+          { user_id: user.id, name: cleanedTag },
+          { onConflict: "user_id,name", ignoreDuplicates: true }
+        )
+        .select("id, name")
+        .single();
+
+      if (upsertedTag) {
+        resolvedTags.push(upsertedTag);
+      } else {
+        const { data: existingTag } = await supabase
+          .from("tags")
+          .select("id, name")
+          .eq("user_id", user.id)
+          .eq("name", cleanedTag)
+          .maybeSingle();
+
+        if (existingTag) resolvedTags.push(existingTag);
+      }
+    }
+
+    if (resolvedTags.length > 0) {
+      await supabase
+        .from("vault_tags")
+        .upsert(
+          resolvedTags.map((tag) => ({
+            vault_id: vault.id,
+            tag_id: tag.id,
+          })),
+          { onConflict: "vault_id,tag_id", ignoreDuplicates: true }
+        );
     }
 
     const cleanedEntries = entries
@@ -223,27 +261,14 @@ export default function OnboardingPage() {
         return;
       }
 
-      const { data: createdTags, error: tagsError } = await supabase
-        .from("tags")
-        .insert(
-          selectedVault.tags.map((tagName) => ({
-            user_id: user.id,
-            name: tagName,
+      // Also tag entries with the first resolved tag
+      if (createdEntries && resolvedTags.length > 0) {
+        await supabase.from("entry_tags").insert(
+          createdEntries.map((entry) => ({
+            entry_id: entry.id,
+            tag_id: resolvedTags[0].id,
           }))
-        )
-        .select("id, name");
-
-      if (!tagsError && createdTags && createdEntries) {
-        const firstTag = createdTags[0];
-
-        if (firstTag) {
-          await supabase.from("entry_tags").insert(
-            createdEntries.map((entry) => ({
-              entry_id: entry.id,
-              tag_id: firstTag.id,
-            }))
-          );
-        }
+        );
       }
     }
 

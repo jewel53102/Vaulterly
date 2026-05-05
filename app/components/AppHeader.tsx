@@ -41,9 +41,9 @@ export default function AppHeader({
           </Link>
 
           {showNewVaultButton ? (
-            <Link href="/onboarding" className="button button-primary button-small">
-  + New Vault
-</Link>
+            <Link href="/welcome" className="button button-primary button-small">
+              + New Vault
+            </Link>
           ) : null}
 
           <UserMenu />

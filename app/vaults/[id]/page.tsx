@@ -96,13 +96,9 @@ export default async function VaultPage({
   .eq("id", id)
   .maybeSingle();
 
-console.log("VAULT PAGE ID:", id);
-console.log("VAULT PAGE DATA:", data);
-console.log("VAULT PAGE ERROR:", error);
-
-if (error || !data) {
-  notFound();
-}
+  if (error || !data) {
+    notFound();
+  }
 
   const vault = data as unknown as VaultRow;
 
@@ -110,14 +106,7 @@ if (error || !data) {
   const canView = vault.is_public === true || isOwner;
 
   if (!canView) {
-    if (error) {
-  console.error("Vault page error:", error);
-  notFound();
-}
-
-if (!data) {
-  notFound();
-};
+    notFound();
   }
 
   const entries = vault.entries ?? [];

@@ -111,8 +111,11 @@ function vaultMatchesSearch(
   const authorName = getAuthorName(vault, profileMap);
 
   const searchableText = [
+    getVaultName(vault),
+    vault.description,
     vault.category,
     authorName,
+    ...(vault.entries?.map((entry) => entry.title) ?? []),
     ...(vault.entries?.flatMap((entry) => getEntryTagNames(entry)) ?? []),
   ]
     .filter(Boolean)

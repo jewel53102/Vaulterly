@@ -166,7 +166,7 @@ export default function VaultDetailClient({ vaultId }: VaultDetailClientProps) {
               </span>
 
               <div>
-                <strong className="brand-text">Hoard Vault</strong>
+                <strong className="brand-text">Vaulterly</strong>
                 <p className="app-header-subtitle">
                   {loading ? 'Loading vault' : 'Vault details'}
                 </p>
@@ -307,7 +307,7 @@ export default function VaultDetailClient({ vaultId }: VaultDetailClientProps) {
                   </h2>
 
                   <p>
-                    This public Hoard Vault collection brings together saved links,
+                    This public Vaulterly collection brings together saved links,
                     notes, tools, ideas, and resources related to{' '}
                     <strong>{vault.name}</strong>
                     {vault.category ? (

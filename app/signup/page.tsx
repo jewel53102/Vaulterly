@@ -89,7 +89,7 @@ export default function SignupPage() {
               </span>
             </div>
             <div>
-              <span className="brand-text">Hoard Vault</span>
+              <span className="brand-text">Vaulterly</span>
               <p className="auth-brand-tag">Organize. Save. Know More.</p>
             </div>
           </Link>
@@ -117,7 +117,7 @@ export default function SignupPage() {
               <p className="mini-label">Sign Up</p>
               <h2>Create your account</h2>
               <p>
-                Get started with Hoard Vault and organize the sources you
+                Get started with Vaulterly and organize the sources you
                 actually want to keep.
               </p>
             </div>

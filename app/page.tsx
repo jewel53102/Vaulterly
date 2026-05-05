@@ -21,7 +21,7 @@ export default function HomePage() {
 
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
                   Save links, notes, research, and ideas into structured
-                  vaults—so nothing gets lost when you need it.
+                  vaults—so nothing gets lost when you need it. Export your vaults and put them into your AI prompts to summarize them for future use.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">

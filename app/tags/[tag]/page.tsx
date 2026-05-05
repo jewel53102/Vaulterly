@@ -198,7 +198,7 @@ export default function TagPage() {
               </span>
 
               <div>
-                <strong className="brand-text">Hoard Vault</strong>
+                <strong className="brand-text">Vaulterly</strong>
                 <p className="app-header-subtitle">Tag discovery</p>
               </div>
             </Link>
@@ -248,10 +248,10 @@ export default function TagPage() {
             <h2>Explore public vaults about {tagName}</h2>
 
             <p>
-              This page gathers public Hoard Vault collections connected to{' '}
+              This page gathers public Vaulterly collections connected to{' '}
               <strong>#{tagName}</strong>. Use these vaults to discover organized
               resources, useful tools, saved links, notes, references, and ideas
-              curated by Hoard Vault creators.
+              curated by Vaulterly creators.
             </p>
 
             <p>

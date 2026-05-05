@@ -225,11 +225,10 @@ export default async function ExplorePage({
     vaultMatchesSearch(vault, searchTerm, profileMap)
   );
 
-  const startHereVault = vaults.find((vault) =>
-    getVaultName(vault).toLowerCase().includes("start here")
-  );
+  const FEATURED_VAULT_ID = "8275131f-bc9d-4a3d-8a09-9049e8e67bd1";
 
-  const featuredVault = startHereVault ?? vaults[0] ?? null;
+  const featuredVault =
+    vaults.find((vault) => vault.id === FEATURED_VAULT_ID) ?? null;
 
   const remainingVaults = vaults.filter(
     (vault) => vault.id !== featuredVault?.id

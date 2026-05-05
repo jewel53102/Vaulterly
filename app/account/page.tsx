@@ -250,7 +250,7 @@ export default function AccountPage() {
 
         <section className="account-card">
           <h2>Public Profile</h2>
-          <p>Update the details shown on your public Hoard Vault profile.</p>
+          <p>Update the details shown on your public Vaulterly profile.</p>
 
           <div className="account-form-section">
             <div className="account-avatar-row">
@@ -399,7 +399,7 @@ export default function AccountPage() {
 
         <section className="account-card account-danger-card">
           <h2>Account Access</h2>
-          <p>Sign out of your Hoard Vault account.</p>
+          <p>Sign out of your Vaulterly account.</p>
 
           <button
             type="button"

@@ -104,7 +104,7 @@ export default function FollowingPage() {
               </span>
 
               <div>
-                <strong className="brand-text">Hoard Vault</strong>
+                <strong className="brand-text">Vaulterly</strong>
                 <p className="app-header-subtitle">People you follow</p>
               </div>
             </Link>

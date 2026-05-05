@@ -81,7 +81,7 @@ export default function UserMenu() {
     router.refresh()
   }
 
-  const displayName = username || 'Hoard Vault User'
+  const displayName = username || 'Vaulterly User'
 
   const initials = username
     ? username.slice(0, 1).toUpperCase()

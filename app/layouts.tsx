@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Hoard Vault",
+  title: "Vaulterlyt",
   description: "Organize the sources you actually want to keep.",
 };
 

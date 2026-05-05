@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import AppHeader from "@/app/components/AppHeader";
 import { createClient } from "@/utils/supabase/server";
 import { duplicatePublicVault } from "@/app/actions";
+import ExportVaultButton from "@/app/components/ExportVaultButton";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -83,7 +84,12 @@ export default async function VaultPage({
       url,
       description,
       notes,
-      created_at
+      created_at,
+      entry_tags (
+        tags (
+          name
+        )
+      )
     )
   `
   )
@@ -115,6 +121,22 @@ if (!data) {
   }
 
   const entries = vault.entries ?? [];
+
+  const exportData = {
+    name: getVaultName(vault),
+    description: vault.description,
+    category: vault.category,
+    is_public: vault.is_public,
+    created_at: vault.created_at,
+    entries: entries.map((entry) => ({
+      title: entry.title,
+      url: entry.url,
+      description: entry.description,
+      notes: entry.notes,
+      created_at: entry.created_at,
+      tags: getEntryTagNames(entry),
+    })),
+  };
 
   return (
     <>
@@ -196,6 +218,8 @@ if (!data) {
                     </button>
                   </form>
                 )}
+
+                <ExportVaultButton vault={exportData} />
               </div>
             </div>
           </div>

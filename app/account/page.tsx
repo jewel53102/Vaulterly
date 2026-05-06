@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
+import { useUsernameCheck } from '@/app/hooks/useUsernameCheck'
 
 type Profile = {
   username: string | null
@@ -28,6 +29,8 @@ export default function AccountPage() {
   const [saving, setSaving] = useState(false)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [toast, setToast] = useState('')
+
+  const usernameStatus = useUsernameCheck(username, userId || undefined)
 
   useEffect(() => {
     async function loadAccount() {
@@ -294,9 +297,20 @@ export default function AccountPage() {
                 placeholder="Your username"
               />
 
-              <p className="account-help-text">
-                Your public profile will be available at /u/{username || 'username'}.
-              </p>
+              {usernameStatus === 'checking' && (
+                <p className="account-help-text">Checking availability...</p>
+              )}
+              {usernameStatus === 'available' && (
+                <p className="account-help-text" style={{ color: '#16a34a' }}>✓ Username is available</p>
+              )}
+              {usernameStatus === 'taken' && (
+                <p className="account-help-text" style={{ color: '#dc2626' }}>✗ Username is already taken</p>
+              )}
+              {usernameStatus === 'idle' && (
+                <p className="account-help-text">
+                  Your public profile will be available at /u/{username || 'username'}.
+                </p>
+              )}
             </div>
 
             <div className="account-field">
@@ -331,7 +345,7 @@ export default function AccountPage() {
             <button
               type="button"
               onClick={updateProfile}
-              disabled={saving}
+              disabled={saving || usernameStatus === 'taken'}
               className="button button-primary button-small"
             >
               {saving ? 'Saving...' : 'Save Public Profile'}

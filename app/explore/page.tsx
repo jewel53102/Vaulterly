@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import AppHeader from "@/app/components/AppHeader";
 import FollowButton from "@/app/components/FollowButton";
 import FeaturedVaultToggle from "@/app/components/FeaturedVaultToggle";
+import ExploreVaultGrid, { ExploreVault } from "@/app/components/ExploreVaultGrid";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -36,26 +37,8 @@ type VaultRow = {
   entries?: EntryRow[];
 };
 
-const categoryFilters = [
-  "All",
-  "Student Resources",
-  "Study & Productivity",
-  "AI Tools",
-  "Side Hustles",
-  "Free Learning",
-];
-
 function getVaultName(vault: VaultRow | null | undefined): string {
   return vault?.name?.trim() || vault?.title?.trim() || "Untitled Vault";
-}
-
-function getBadge(vault: VaultRow, index: number) {
-  const name = getVaultName(vault).toLowerCase();
-
-  if (name.includes("start here")) return "⭐ Start Here";
-  if (index < 3) return "🔥 Trending";
-
-  return "Popular";
 }
 
 function getEntryTagNames(entry: EntryRow): string[] {
@@ -75,17 +58,6 @@ function getEntryTagNames(entry: EntryRow): string[] {
 
 function getVaultPreviewEntries(vault: VaultRow) {
   return vault.entries?.slice(0, 3) ?? [];
-}
-
-function getVaultCategory(vault: VaultRow) {
-  return vault.category || "Student Resources";
-}
-
-function getCategoryAnchor(category: string) {
-  return category
-    .toLowerCase()
-    .replaceAll(" ", "-")
-    .replaceAll("&", "and");
 }
 
 function getAuthorName(
@@ -160,6 +132,11 @@ export default async function ExplorePage({
 }) {
   const supabase = await createClient();
   const searchTerm = searchParams?.q?.trim() || "";
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
 
   const { data: vaultsData, error } = await supabase
     .from("vaults")
@@ -237,6 +214,20 @@ export default async function ExplorePage({
     (vault) => vault.id !== featuredVault?.id
   );
 
+  const exploreVaults: ExploreVault[] = remainingVaults.map((vault) => ({
+    id: vault.id,
+    title: getVaultName(vault),
+    description: vault.description ?? "",
+    badge: "",
+    tags: [],
+    entries: (vault.entries ?? []).map((entry) => ({
+      id: entry.id,
+      title: entry.title ?? "",
+      url: entry.url,
+      description: entry.description,
+    })),
+  }));
+
   return (
     <>
       <AppHeader />
@@ -277,21 +268,6 @@ export default async function ExplorePage({
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {categoryFilters.map((category) => (
-                <a
-                  key={category}
-                  href={
-                    category === "All"
-                      ? "#vaults"
-                      : `#${getCategoryAnchor(category)}`
-                  }
-                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:text-slate-950"
-                >
-                  {category}
-                </a>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -315,17 +291,13 @@ export default async function ExplorePage({
                     </p>
                   )}
 
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-6">
                     <Link
                       href={`/vaults/${featuredVault.id}`}
                       className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                     >
                       Open Vault
                     </Link>
-
-                    <span className="inline-flex items-center rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
-                      {getVaultCategory(featuredVault)}
-                    </span>
                   </div>
 
                   <AuthorFollowRow
@@ -394,134 +366,45 @@ export default async function ExplorePage({
           id="vaults"
           className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-950">
-              Browse public vaults
-            </h2>
+          <form action="/explore" className="mb-6 max-w-2xl">
+            <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row">
+              <input
+                type="search"
+                name="q"
+                defaultValue={searchTerm}
+                placeholder="Search vaults by name, tag, or author..."
+                className="min-h-[48px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+              />
 
-            <p className="mt-2 text-slate-600">
-              Search by category, tag, or author, then click any vault to view
-              the full collection.
-            </p>
+              <button
+                type="submit"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+              >
+                Search
+              </button>
 
-            <form action="/explore" className="mt-5 max-w-2xl">
-              <div className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row">
-                <input
-                  type="search"
-                  name="q"
-                  defaultValue={searchTerm}
-                  placeholder="Search by category, tag, or author..."
-                  className="min-h-[48px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-                />
-
-                <button
-                  type="submit"
-                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl bg-slate-950 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
-                >
-                  Search
-                </button>
-
-                {searchTerm ? (
-                  <Link
-                    href="/explore"
-                    className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
-                  >
-                    Clear
-                  </Link>
-                ) : null}
-              </div>
-
-              {searchTerm ? (
-                <p className="mt-3 text-sm text-slate-600">
-                  Showing {vaults.length} result
-                  {vaults.length === 1 ? "" : "s"} for{" "}
-                  <span className="font-semibold text-slate-950">
-                    “{searchTerm}”
-                  </span>
-                </p>
-              ) : null}
-            </form>
-          </div>
-
-          {remainingVaults.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {remainingVaults.map((vault, index) => (
-                <article
-                  key={vault.id}
-                  id={getCategoryAnchor(getVaultCategory(vault))}
-                  className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="mb-4 flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                      {getBadge(vault, index)}
-                    </span>
-
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                      {getVaultCategory(vault)}
-                    </span>
-                  </div>
-
-                  <Link href={`/vaults/${vault.id}`} className="group">
-                    <h3 className="text-xl font-bold text-slate-950 group-hover:text-indigo-700">
-                      {getVaultName(vault)}
-                    </h3>
-
-                    {vault.description && (
-                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
-                        {vault.description}
-                      </p>
-                    )}
-                  </Link>
-
-                  <div className="mt-5 space-y-3">
-                    {getVaultPreviewEntries(vault).map((entry) => (
-                      <div
-                        key={entry.id}
-                        className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                      >
-                        <p className="font-semibold text-indigo-600">
-                          {entry.title || "Untitled Entry"}
-                        </p>
-
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-5">
-                    <Link
-                      href={`/vaults/${vault.id}`}
-                      className="inline-flex text-sm font-semibold text-slate-950 hover:text-indigo-700 hover:underline"
-                    >
-                      View full vault →
-                    </Link>
-                  </div>
-
-                  <AuthorFollowRow vault={vault} profileMap={profileMap} />
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-8 text-center">
-              <h3 className="text-lg font-semibold text-slate-950">
-                {searchTerm ? "No matching vaults found" : "No public vaults yet"}
-              </h3>
-
-              <p className="mt-2 text-slate-600">
-                {searchTerm
-                  ? "Try searching for a different category, tag, or author."
-                  : "Public vaults will appear here once they are published."}
-              </p>
-
-              {searchTerm ? (
+              {searchTerm && (
                 <Link
                   href="/explore"
-                  className="mt-5 inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                  className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
                 >
-                  Clear search
+                  Clear
                 </Link>
-              ) : null}
+              )}
             </div>
-          )}
+
+            {searchTerm && (
+              <p className="mt-3 text-sm text-slate-600">
+                Showing {exploreVaults.length} result
+                {exploreVaults.length === 1 ? "" : "s"} for{" "}
+                <span className="font-semibold text-slate-950">
+                  {`"${searchTerm}"`}
+                </span>
+              </p>
+            )}
+          </form>
+
+          <ExploreVaultGrid vaults={exploreVaults} isLoggedIn={isLoggedIn} />
         </section>
       </main>
     </>

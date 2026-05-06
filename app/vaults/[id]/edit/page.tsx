@@ -18,6 +18,7 @@ export default function EditVaultPage() {
   const [category, setCategory] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [entryCount, setEntryCount] = useState(0);
+  const [emailConfirmed, setEmailConfirmed] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -39,6 +40,8 @@ export default function EditVaultPage() {
         setIsLoading(false);
         return;
       }
+
+      setEmailConfirmed(!!user.email_confirmed_at);
 
       const { data: vault, error: vaultError } = await supabase
         .from("vaults")
@@ -87,6 +90,14 @@ export default function EditVaultPage() {
 
     if (!cleanName) {
       setErrorMessage("Vault name is required.");
+      setIsSaving(false);
+      return;
+    }
+
+    if (isPublic && !emailConfirmed) {
+      setErrorMessage(
+        "Confirm your email address before making this vault public."
+      );
       setIsSaving(false);
       return;
     }
@@ -280,19 +291,25 @@ export default function EditVaultPage() {
                   saved entries.
                 </p>
 
-                <p
-                  className={
-                    entriesNeeded > 0
-                      ? "vault-publish-warning"
-                      : "vault-publish-ready"
-                  }
-                >
-                  {entriesNeeded > 0
-                    ? `Add ${entriesNeeded} more saved entr${
-                        entriesNeeded === 1 ? "y" : "ies"
-                      } before publishing.`
-                    : "This vault has enough entries to be public."}
-                </p>
+                {!emailConfirmed ? (
+                  <p className="vault-publish-warning">
+                    Confirm your email address to unlock public sharing.
+                  </p>
+                ) : (
+                  <p
+                    className={
+                      entriesNeeded > 0
+                        ? "vault-publish-warning"
+                        : "vault-publish-ready"
+                    }
+                  >
+                    {entriesNeeded > 0
+                      ? `Add ${entriesNeeded} more saved entr${
+                          entriesNeeded === 1 ? "y" : "ies"
+                        } before publishing.`
+                      : "This vault has enough entries to be public."}
+                  </p>
+                )}
               </div>
 
               <label className="vault-toggle-label">
@@ -300,6 +317,7 @@ export default function EditVaultPage() {
                   type="checkbox"
                   checked={isPublic}
                   onChange={(e) => setIsPublic(e.target.checked)}
+                  disabled={!emailConfirmed}
                 />
                 Make public
               </label>

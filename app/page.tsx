@@ -16,12 +16,11 @@ export default function HomePage() {
                 </p>
 
                 <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-                  Organize everything you learn. Actually use it later.
+                  The Reference Manager for Everything
                 </h1>
 
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                  Save links, notes, research, and ideas into structured
-                  vaults—so nothing gets lost when you need it. Export your vaults and put them into your AI prompts to summarize them for future use.
+                  Save sources, articles, datasets, tools, and notes — and pipe the whole vault into your AI when you're ready to write.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">

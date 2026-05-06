@@ -4,6 +4,7 @@ import AppHeader from "@/app/components/AppHeader";
 import { createClient } from "@/utils/supabase/server";
 import { duplicatePublicVault } from "@/app/actions";
 import ExportVaultButton from "@/app/components/ExportVaultButton";
+import VaultEntrySearch from "@/app/components/VaultEntrySearch";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -111,6 +112,16 @@ export default async function VaultPage({
 
   const entries = vault.entries ?? [];
 
+  const searchableEntries = entries.map((entry) => ({
+    id: entry.id,
+    title: entry.title,
+    url: entry.url,
+    description: entry.description,
+    notes: entry.notes,
+    created_at: entry.created_at,
+    tags: getEntryTagNames(entry),
+  }));
+
   const exportData = {
     name: getVaultName(vault),
     description: vault.description,
@@ -215,86 +226,11 @@ export default async function VaultPage({
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-          {entries.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-              <h2 className="text-xl font-semibold text-slate-950">
-                No entries yet
-              </h2>
-
-              <p className="mt-2 text-slate-600">
-                This vault does not have any saved resources yet.
-              </p>
-
-              {isOwner && (
-                <Link
-                  href={`/vaults/${vault.id}/new`}
-                  className="mt-6 inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-                >
-                  Add Your First Entry
-                </Link>
-              )}
-            </div>
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {entries.map((entry) => {
-                const tags = getEntryTagNames(entry);
-
-                return (
-                  <article
-                    key={entry.id}
-                    className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <div className="flex-1">
-                      <h2 className="text-lg font-bold leading-7 text-slate-950">
-                        {entry.title || "Untitled Resource"}
-                      </h2>
-
-                      {(entry.description || entry.notes) && (
-  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
-    {entry.description || entry.notes}
-  </p>
-)}
-
-                      {tags.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-5 flex flex-col gap-2">
-                      {entry.url && (
-                        <a
-                          href={entry.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
-                        >
-                          Open Resource
-                        </a>
-                      )}
-
-                      {isOwner && (
-                        <Link
-                          href={`/entry/${entry.id}/edit`}
-                          className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-50"
-                        >
-                          Edit Entry
-                        </Link>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
+          <VaultEntrySearch
+            entries={searchableEntries}
+            isOwner={isOwner}
+            vaultId={vault.id}
+          />
         </section>
       </main>
     </>

@@ -4,6 +4,16 @@ import Link from "next/link";
 import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { useUsernameCheck } from "@/app/hooks/useUsernameCheck";
+
+function generateUsername(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 30);
+}
 
 export default function SignupPage() {
   const router = useRouter();
@@ -15,6 +25,9 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const proposedUsername = generateUsername(name);
+  const usernameStatus = useUsernameCheck(proposedUsername);
 
   async function handleSignup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,6 +58,7 @@ export default function SignupPage() {
         id: user.id,
         email: user.email,
         display_name: name,
+        username: generateUsername(name),
       });
     }
 
@@ -162,6 +176,21 @@ export default function SignupPage() {
                   required
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
                 />
+                {proposedUsername.length >= 2 && (
+                  <p className="mt-1.5 text-xs text-slate-500">
+                    Your username will be{" "}
+                    <span className="font-medium text-slate-700">@{proposedUsername}</span>
+                    {usernameStatus === "checking" && (
+                      <span className="ml-1 text-slate-400">— checking...</span>
+                    )}
+                    {usernameStatus === "available" && (
+                      <span className="ml-1 text-green-600">✓ available</span>
+                    )}
+                    {usernameStatus === "taken" && (
+                      <span className="ml-1 text-red-600">✗ already taken — try a different name</span>
+                    )}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -212,7 +241,7 @@ export default function SignupPage() {
               <button
                 type="submit"
                 className="w-full rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
-                disabled={loading}
+                disabled={loading || usernameStatus === "taken"}
               >
                 {loading ? "Creating Account..." : "Create Account"}
               </button>

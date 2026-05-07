@@ -35,10 +35,28 @@ type VaultRow = {
   is_public: boolean | null;
   created_at: string | null;
   entries?: EntryRow[];
+  vault_tags?: {
+    tags?: TagShape;
+  }[];
 };
 
 function getVaultName(vault: VaultRow | null | undefined): string {
   return vault?.name?.trim() || vault?.title?.trim() || "Untitled Vault";
+}
+
+function getVaultTagNames(vault: VaultRow): string[] {
+  return (
+    vault.vault_tags
+      ?.flatMap((vaultTag) => {
+        const tags = vaultTag.tags;
+        if (!tags) return [];
+        if (Array.isArray(tags)) {
+          return tags.map((tag) => tag.name).filter(Boolean);
+        }
+        return tags.name ? [tags.name] : [];
+      })
+      .filter(Boolean) ?? []
+  );
 }
 
 function getEntryTagNames(entry: EntryRow): string[] {
@@ -87,7 +105,11 @@ function vaultMatchesSearch(
     vault.description,
     vault.category,
     authorName,
+    ...getVaultTagNames(vault),
     ...(vault.entries?.map((entry) => entry.title) ?? []),
+    ...(vault.entries?.map((entry) => entry.description) ?? []),
+    ...(vault.entries?.map((entry) => entry.notes) ?? []),
+    ...(vault.entries?.map((entry) => entry.url) ?? []),
     ...(vault.entries?.flatMap((entry) => getEntryTagNames(entry)) ?? []),
   ]
     .filter(Boolean)
@@ -150,6 +172,11 @@ export default async function ExplorePage({
       category,
       is_public,
       created_at,
+      vault_tags (
+        tags (
+          name
+        )
+      ),
       entries (
         id,
         vault_id,
@@ -219,7 +246,7 @@ export default async function ExplorePage({
     title: getVaultName(vault),
     description: vault.description ?? "",
     badge: "",
-    tags: [],
+    tags: getVaultTagNames(vault),
     entries: (vault.entries ?? []).map((entry) => ({
       id: entry.id,
       title: entry.title ?? "",

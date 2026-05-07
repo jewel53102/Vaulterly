@@ -180,7 +180,7 @@ export default function WelcomePage() {
         </div>
 
         <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-indigo-600">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-[#4a7a9b]">
             New Vault
           </p>
           <h2 className="text-2xl font-bold tracking-tight text-slate-950">
@@ -204,7 +204,7 @@ export default function WelcomePage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Example: AI Tools, Marketing Ideas, Recipes"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
             </div>
 
@@ -220,7 +220,7 @@ export default function WelcomePage() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 placeholder="Example: Business, Recipes, AI Tools, Research"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
               <p className="mt-1.5 text-xs text-slate-500">
                 Categories help organize your dashboard.
@@ -240,7 +240,7 @@ export default function WelcomePage() {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="What will this vault be used for?"
                 rows={4}
-                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
             </div>
 
@@ -256,7 +256,7 @@ export default function WelcomePage() {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 placeholder="ai, business, marketing, recipes"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
               <p className="mt-1.5 text-xs text-slate-500">
                 Separate tags with commas. Tags help people find your public
@@ -280,7 +280,7 @@ export default function WelcomePage() {
                   onChange={(e) => setIsPublic(e.target.checked)}
                   className="peer sr-only"
                 />
-                <div className="peer h-6 w-11 rounded-full bg-slate-300 transition after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-5" />
+                <div className="peer h-6 w-11 rounded-full bg-slate-300 transition after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-all after:content-[''] peer-checked:bg-[#779EBF] peer-checked:after:translate-x-5" />
               </label>
             </div>
 

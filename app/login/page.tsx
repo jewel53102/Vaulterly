@@ -98,7 +98,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Your password"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
             </div>
 
@@ -129,7 +129,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               href="/signup"
-              className="font-semibold text-indigo-600 hover:underline"
+              className="font-semibold text-[#4a7a9b] hover:underline"
             >
               Sign up
             </Link>

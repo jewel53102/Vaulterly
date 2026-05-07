@@ -194,7 +194,7 @@ export default async function VaultPage({
               <div className="max-w-3xl">
                 <div className="mb-3 flex flex-wrap gap-2">
                   {vault.is_public && (
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+                    <span className="rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                       Public Vault
                     </span>
                   )}
@@ -236,7 +236,7 @@ export default async function VaultPage({
                 {isOwner && (
                   <Link
                     href={`/vaults/${vault.id}/new`}
-                    className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#ebf2f8]0"
                   >
                     Add Entry
                   </Link>

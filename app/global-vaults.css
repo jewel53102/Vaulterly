@@ -59,7 +59,7 @@
 
 .vault-public-card:hover {
   transform: translateY(-2px);
-  border-color: #c7d1dd;
+  border-color: #d4bfad;
   box-shadow: var(--shadow-md);
 }
 
@@ -99,7 +99,7 @@
 .vault-tag {
   min-height: 30px;
   padding: 0 0.7rem;
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-text-soft);
   font-size: 0.8rem;
 }
@@ -174,7 +174,7 @@
 }
 
 .vault-button-secondary:hover {
-  background: #f1f5f9;
+  background: #f9f5f1;
 }
 
 .vault-button-danger {
@@ -257,7 +257,7 @@
 .vault-input:focus,
 .vault-textarea:focus {
   border-color: var(--color-secondary);
-  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.12);
+  box-shadow: 0 0 0 4px rgba(246, 145, 73, 0.12);
 }
 
 .vault-input-spaced,
@@ -509,7 +509,7 @@
 }
 
 .vault-toggle-button:hover {
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-primary);
 }
 
@@ -535,7 +535,7 @@
 }
 
 .vault-option-button:hover {
-  border-color: #c7d1dd;
+  border-color: #d4bfad;
   box-shadow: var(--shadow-sm);
 }
 

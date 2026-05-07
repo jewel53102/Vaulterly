@@ -11,7 +11,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
               <div>
-                <p className="mb-4 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+                <p className="mb-4 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                   Vaulterly
                 </p>
 
@@ -40,53 +40,53 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+              <div className="rounded-3xl border border-[#e8d8c8] bg-[#F1DFCA] p-4 shadow-sm">
                 <div className="rounded-3xl bg-white p-5 shadow-sm">
                   <div className="mb-4 flex items-center justify-between gap-3">
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                    <span className="rounded-full bg-[#fef3e8] px-3 py-1 text-xs font-medium text-[#F69149]">
                       Student Research
                     </span>
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                    <span className="rounded-full bg-[#faf6f2] px-3 py-1 text-xs font-semibold text-[#553F28]">
                       Public
                     </span>
                   </div>
 
-                  <h2 className="text-xl font-bold leading-7 text-blue-500">
+                  <h2 className="text-xl font-bold leading-7 text-[#553F28]">
                     Psychology 101 Study Vault
                   </h2>
 
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                  <p className="mt-2 text-sm leading-6 text-[#8a7060]">
                     Articles, notes, tools, and references organized in one
                     place for quick review later.
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                    <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
                       #study
                     </span>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                    <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
                       #research
                     </span>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                    <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
                       #sources
                     </span>
                   </div>
 
                   <div className="mt-5 grid gap-3">
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      <p className="text-sm font-semibold text-slate-950">
+                    <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
+                      <p className="text-sm font-semibold text-[#553F28]">
                         Essay Sources
                       </p>
-                      <p className="mt-1 text-sm text-slate-600">
+                      <p className="mt-1 text-sm text-[#8a7060]">
                         Saved with notes so the context is still clear later.
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      <p className="text-sm font-semibold text-slate-950">
+                    <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
+                      <p className="text-sm font-semibold text-[#553F28]">
                         Study Tools
                       </p>
-                      <p className="mt-1 text-sm text-slate-600">
+                      <p className="mt-1 text-sm text-[#8a7060]">
                         Useful links grouped by class, project, or topic.
                       </p>
                     </div>
@@ -117,7 +117,7 @@ export default function HomePage() {
 
         <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
           <div className="mb-6">
-            <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+            <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
               How It Works
             </p>
 
@@ -162,7 +162,7 @@ export default function HomePage() {
         <section className="border-y border-slate-200 bg-white">
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <div className="mb-6">
-              <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+              <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                 Use Cases
               </p>
 
@@ -227,7 +227,7 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+            <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
               Explore
             </p>
 

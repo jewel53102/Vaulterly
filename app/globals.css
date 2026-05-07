@@ -1,19 +1,20 @@
 :root {
-  --color-primary: #286eb9;
-  --color-accent: #2e7d5b;
-  --color-accent-dark: #25674b;
-  --color-secondary: #4a90e2;
-  --color-bg: #f8fafc;
-  --color-surface: #e5e7eb;
+  --color-primary: #553F28;
+  --color-accent: #F69149;
+  --color-accent-dark: #e07230;
+  --color-secondary: #779EBF;
+  --color-gold: #D1AC65;
+  --color-bg: #ffffff;
+  --color-surface: #F1DFCA;
   --color-surface-2: #ffffff;
-  --color-text: #0d1b2a;
-  --color-text-soft: #5f6b7a;
-  --color-border: #d8dee6;
-  --color-border-soft: #eef2f6;
-  --color-navy-soft: #10263a;
-  --color-success-soft: #e7f4ee;
-  --color-blue-soft: #e9f2fc;
-  --color-purple-soft: #f1ebff;
+  --color-text: #553F28;
+  --color-text-soft: #8a7060;
+  --color-border: #e8d8c8;
+  --color-border-soft: #f5ede6;
+  --color-navy-soft: #3d2c1e;
+  --color-success-soft: #fef3e8;
+  --color-blue-soft: #ebf2f8;
+  --color-purple-soft: #d8e8f5;
   --color-danger-soft: #fff1f2;
   --color-danger: #b42318;
   --color-danger-border: #fecdd3;
@@ -26,9 +27,9 @@
   --radius-lg: 24px;
   --radius-xl: 32px;
 
-  --shadow-sm: 0 8px 24px rgba(13, 27, 42, 0.06);
-  --shadow-md: 0 18px 40px rgba(13, 27, 42, 0.08);
-  --shadow-lg: 0 24px 60px rgba(13, 27, 42, 0.12);
+  --shadow-sm: 0 8px 24px rgba(85, 63, 40, 0.06);
+  --shadow-md: 0 18px 40px rgba(85, 63, 40, 0.08);
+  --shadow-lg: 0 24px 60px rgba(85, 63, 40, 0.12);
 
   --container: 1200px;
 }
@@ -166,7 +167,7 @@ img {
 }
 
 .button-secondary:hover {
-  background: #f1f5f9;
+  background: #f9f5f1;
 }
 
 .button-ghost {
@@ -175,7 +176,7 @@ img {
 }
 
 .button-ghost:hover {
-  background: rgba(13, 27, 42, 0.05);
+  background: rgba(85, 63, 40, 0.05);
 }
 
 .button-ghost-dark {
@@ -374,7 +375,7 @@ img {
   padding: 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  background: linear-gradient(180deg, #ffffff 0%, #f3f7fb 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f8f2eb 100%);
   box-shadow: var(--shadow-md);
 }
 
@@ -430,7 +431,7 @@ img {
 
 .app-main {
   padding: 1.25rem;
-  background: #fcfdff;
+  background: #fefcfa;
 }
 
 .app-main-top {
@@ -517,7 +518,7 @@ img {
 
 .vault-icon.purple {
   background: var(--color-purple-soft);
-  color: #7c5cff;
+  color: #779EBF;
 }
 
 .app-search-card {
@@ -535,7 +536,7 @@ img {
   padding: 0 1rem;
   border: 1px solid var(--color-border);
   border-radius: 14px;
-  color: #8a94a3;
+  color: #b09a8a;
 }
 
 .tag-row,
@@ -572,7 +573,7 @@ img {
 .tag,
 .vault-card-tag {
   min-height: 34px;
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-text-soft);
 }
 
@@ -598,7 +599,7 @@ img {
 .tag-pill-removable:hover,
 .entry-tag-button:hover {
   transform: translateY(-1px);
-  background: #dcefe6;
+  background: #fde8d8;
 }
 
 .entry-tag-button-active,
@@ -670,7 +671,7 @@ img {
 }
 
 .alt-section {
-  background: #f1f5f9;
+  background: #f9f5f1;
 }
 
 .feature-grid,
@@ -750,8 +751,8 @@ img {
   min-height: 100vh;
   padding: 2rem 0;
   background:
-    radial-gradient(circle at top left, rgba(74, 144, 226, 0.08), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(46, 125, 91, 0.08), transparent 24%),
+    radial-gradient(circle at top left, rgba(246, 145, 73, 0.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(209, 172, 101, 0.08), transparent 24%),
     var(--color-bg);
 }
 
@@ -821,7 +822,7 @@ img {
 
 .account-field input::placeholder,
 .account-field textarea::placeholder {
-  color: #96a0ad;
+  color: #b09a8a;
 }
 
 .account-field input:focus,
@@ -833,7 +834,7 @@ img {
 .save-entry-select:focus,
 .vault-tag-input-row input:focus {
   border-color: var(--color-secondary);
-  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.12);
+  box-shadow: 0 0 0 4px rgba(246, 145, 73, 0.12);
 }
 
 .entry-back-link,
@@ -939,7 +940,7 @@ img {
 
 .vault-dashboard-card:hover {
   transform: translateY(-2px);
-  border-color: #c7d1dd;
+  border-color: #d4bfad;
   box-shadow: var(--shadow-md);
 }
 
@@ -1008,7 +1009,7 @@ img {
 }
 
 .vault-visibility.private {
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-text-soft);
 }
 
@@ -1312,7 +1313,7 @@ img {
 
 .user-menu-trigger:hover {
   transform: translateY(-1px);
-  border-color: #c7d1dd;
+  border-color: #d4bfad;
 }
 
 .user-menu-avatar {
@@ -1384,7 +1385,7 @@ img {
 }
 
 .user-menu-link:hover {
-  background: #f4f7fa;
+  background: #faf6f2;
 }
 
 .user-menu-help-text {
@@ -1475,7 +1476,7 @@ img {
 }
 
 .explore-tab:hover {
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-primary);
 }
 
@@ -1578,7 +1579,7 @@ img {
 .onboarding-check {
   width: 24px;
   height: 24px;
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-text-soft);
   font-size: 0.9rem;
 }
@@ -1669,8 +1670,8 @@ img {
   border: 1px solid var(--color-border);
   border-radius: 32px;
   background:
-    radial-gradient(circle at top left, rgba(74, 144, 226, 0.1), transparent 32%),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    radial-gradient(circle at top left, rgba(246, 145, 73, 0.1), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #faf6f2 100%);
   box-shadow: var(--shadow-md);
 }
 
@@ -1730,7 +1731,7 @@ img {
 
 .profile-website-button:hover {
   transform: translateY(-1px);
-  background: #dcecff;
+  background: #d8e8f5;
 }
 
 .profile-hero-side {
@@ -2213,7 +2214,7 @@ img {
 /* ---------- Accessibility / Interaction Polish ---------- */
 
 :focus-visible {
-  outline: 3px solid rgba(74, 144, 226, 0.45);
+  outline: 3px solid rgba(246, 145, 73, 0.45);
   outline-offset: 3px;
 }
 
@@ -2226,7 +2227,7 @@ img {
 }
 
 .vault-dashboard-card:focus-within {
-  border-color: #c7d1dd;
+  border-color: #d4bfad;
   box-shadow: var(--shadow-md);
 }
 
@@ -2235,7 +2236,7 @@ img {
 .entry-tag-button:focus-visible,
 .explore-tab:focus-visible,
 .user-menu-trigger:focus-visible {
-  outline: 3px solid rgba(74, 144, 226, 0.35);
+  outline: 3px solid rgba(246, 145, 73, 0.35);
   outline-offset: 2px;
 }
 
@@ -2524,7 +2525,7 @@ img {
   min-height: 30px;
   padding: 0 0.7rem;
   border-radius: 999px;
-  background: #f4f7fa;
+  background: #faf6f2;
   color: var(--color-text-soft);
   font-size: 0.8rem;
   font-weight: 800;
@@ -2603,8 +2604,8 @@ img {
 }
 
 .onboarding-compare-card-active {
-  border-color: #abefc6;
-  background: #f7fffb;
+  border-color: #f5d5b0;
+  background: #fef8f2;
 }
 
 .onboarding-compare-card ul {

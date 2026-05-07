@@ -15,7 +15,7 @@ export default function FeaturedVaultToggle({
       <div className="mb-4 flex justify-end">
         <button
           onClick={() => setShow((prev) => !prev)}
-          className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50"
+          className="inline-flex items-center rounded-xl border border-[#e8d8c8] bg-white px-4 py-2 text-sm font-semibold text-[#553F28] shadow-sm hover:bg-[#faf6f2]"
         >
           {show ? "Hide Featured Vault" : "Show Featured Vault"}
         </button>

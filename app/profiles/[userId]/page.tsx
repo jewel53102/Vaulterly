@@ -104,7 +104,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
               <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex gap-4">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-100 text-2xl font-bold text-indigo-700">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#d8e8f5] text-2xl font-bold text-[#4a7a9b]">
                     {typedProfile?.avatar_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -143,7 +143,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                         href={typedProfile.website}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-4 inline-flex text-sm font-medium text-indigo-700 hover:underline"
+                        className="mt-4 inline-flex text-sm font-medium text-[#4a7a9b] hover:underline"
                       >
                         Visit website
                       </a>
@@ -214,7 +214,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
                     </span>
 
                     {vault.category && (
-                      <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                      <span className="rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-medium text-[#4a7a9b]">
                         {vault.category}
                       </span>
                     )}

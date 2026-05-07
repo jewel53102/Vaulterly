@@ -365,7 +365,7 @@ export default function DashboardPage() {
           <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
-                <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+                <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                   Dashboard
                 </p>
 
@@ -406,7 +406,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="rounded-2xl bg-white p-4 text-center shadow-sm">
-                  <p className="text-2xl font-bold text-indigo-600">
+                  <p className="text-2xl font-bold text-[#4a7a9b]">
                     {vaults.filter((vault) => vault.is_public).length}
                   </p>
                   <p className="mt-1 text-xs font-medium text-slate-500">
@@ -473,7 +473,7 @@ export default function DashboardPage() {
                   }
                   className={
                     selectedCategory === category
-                      ? 'whitespace-nowrap rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition'
+                      ? 'whitespace-nowrap rounded-full bg-[#779EBF] px-4 py-2 text-sm font-medium text-white shadow-sm transition'
                       : 'whitespace-nowrap rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-100'
                   }
                 >
@@ -486,10 +486,10 @@ export default function DashboardPage() {
 
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {showOnboarding && (
-            <div className="mb-8 overflow-hidden rounded-3xl border border-indigo-100 bg-gradient-to-br from-indigo-50 via-white to-sky-50 p-6 shadow-sm sm:p-8">
+            <div className="mb-8 overflow-hidden rounded-3xl border border-[#d8e8f5] bg-gradient-to-br from-[#ebf2f8] via-white to-[#f0f7fc] p-6 shadow-sm sm:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                 <div>
-                  <span className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-700">
+                  <span className="inline-flex rounded-full bg-[#d8e8f5] px-3 py-1 text-sm font-semibold text-[#4a7a9b]">
                     First Session Wins
                   </span>
 
@@ -503,14 +503,14 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <span className="inline-flex w-fit rounded-full bg-white px-4 py-2 text-sm font-semibold text-indigo-700 shadow-sm">
+                <span className="inline-flex w-fit rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#4a7a9b] shadow-sm">
                   {Math.round((completedSetupCount / 5) * 100)}% Complete
                 </span>
               </div>
 
               <div className="mt-6 h-3 overflow-hidden rounded-full bg-white">
                 <div
-                  className="h-full rounded-full bg-indigo-600 transition-all"
+                  className="h-full rounded-full bg-[#779EBF] transition-all"
                   style={{ width: `${(completedSetupCount / 5) * 100}%` }}
                 />
               </div>
@@ -576,7 +576,7 @@ export default function DashboardPage() {
                   value={filterSearch}
                   onChange={(event) => setFilterSearch(event.target.value)}
                   placeholder="Search vaults..."
-                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
+                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 />
               </label>
 
@@ -587,7 +587,7 @@ export default function DashboardPage() {
                 <select
                   value={selectedCategory}
                   onChange={(event) => setSelectedCategory(event.target.value)}
-                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
+                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 >
                   <option value="">All categories</option>
                   {categories.map((category) => (
@@ -605,7 +605,7 @@ export default function DashboardPage() {
                 <select
                   value={selectedTag}
                   onChange={(event) => setSelectedTag(event.target.value)}
-                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
+                  className="min-h-[52px] rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 >
                   <option value="">All tags</option>
                   {dashboardTags.map((tag) => (
@@ -640,7 +640,7 @@ export default function DashboardPage() {
                     }
                     className={
                       selectedTag === tag.name
-                        ? 'rounded-full bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white'
+                        ? 'rounded-full bg-[#779EBF] px-3 py-1.5 text-xs font-semibold text-white'
                         : 'rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-200'
                     }
                   >
@@ -716,7 +716,7 @@ export default function DashboardPage() {
                     <span
                       className={
                         vault.is_public
-                          ? 'rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700'
+                          ? 'rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-medium text-[#4a7a9b]'
                           : 'rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700'
                       }
                     >
@@ -781,7 +781,7 @@ export default function DashboardPage() {
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="mb-2 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+                <p className="mb-2 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                   Following
                 </p>
 
@@ -835,7 +835,7 @@ export default function DashboardPage() {
                     className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
                     <div className="mb-4 flex items-center justify-between gap-3">
-                      <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                      <span className="rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-medium text-[#4a7a9b]">
                         Public
                       </span>
 

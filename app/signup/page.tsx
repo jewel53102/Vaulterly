@@ -103,7 +103,7 @@ export default function SignupPage() {
       {/* Brand panel — desktop only */}
       <section className="hidden flex-col justify-between bg-slate-950 px-12 py-16 lg:flex">
         <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-lg font-bold text-white">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#779EBF] text-lg font-bold text-white">
             ◎
           </span>
           <div>
@@ -113,7 +113,7 @@ export default function SignupPage() {
         </Link>
 
         <div>
-          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-indigo-400">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#779EBF]">
             Create Your Account
           </p>
           <h1 className="text-4xl font-bold tracking-tight text-white">
@@ -126,7 +126,7 @@ export default function SignupPage() {
           <ul className="mt-8 space-y-3">
             {benefits.map((item) => (
               <li key={item} className="flex items-center gap-3 text-sm text-slate-300">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-xs text-white">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#779EBF] text-xs text-white">
                   ✓
                 </span>
                 {item}
@@ -150,7 +150,7 @@ export default function SignupPage() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-indigo-600">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-[#4a7a9b]">
               Sign Up
             </p>
             <h2 className="text-2xl font-bold tracking-tight text-slate-950">
@@ -174,7 +174,7 @@ export default function SignupPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 />
                 {proposedUsername.length >= 2 && (
                   <p className="mt-1.5 text-xs text-slate-500">
@@ -205,7 +205,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 />
               </div>
 
@@ -222,7 +222,7 @@ export default function SignupPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                 />
               </div>
 
@@ -271,7 +271,7 @@ export default function SignupPage() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-semibold text-indigo-600 hover:underline"
+                className="font-semibold text-[#4a7a9b] hover:underline"
               >
                 Log in
               </Link>

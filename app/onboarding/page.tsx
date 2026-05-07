@@ -292,7 +292,7 @@ export default function OnboardingPage() {
           <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
-                <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+                <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                   Vaulterly Onboarding
                 </p>
 
@@ -316,7 +316,7 @@ export default function OnboardingPage() {
                 <div
                   key={stepNumber}
                   className={`h-2 rounded-full ${
-                    step >= stepNumber ? "bg-indigo-600" : "bg-slate-200"
+                    step >= stepNumber ? "bg-[#779EBF]" : "bg-slate-200"
                   }`}
                 />
               ))}
@@ -350,9 +350,9 @@ export default function OnboardingPage() {
                     key={vault.id}
                     type="button"
                     onClick={() => chooseVault(vault)}
-                    className="rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-md"
+                    className="rounded-3xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#779EBF] hover:shadow-md"
                   >
-                    <span className="mb-4 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                    <span className="mb-4 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-semibold text-[#4a7a9b]">
                       {vault.label}
                     </span>
 
@@ -377,7 +377,7 @@ export default function OnboardingPage() {
 
                     <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-4 text-sm font-semibold">
                       <span className="text-slate-500">{vault.category}</span>
-                      <span className="text-indigo-600">
+                      <span className="text-[#4a7a9b]">
                         Start with this vault →
                       </span>
                     </div>
@@ -412,7 +412,7 @@ export default function OnboardingPage() {
 
               <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
                 <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <span className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
+                  <span className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-semibold text-[#4a7a9b]">
                     {selectedVault.category}
                   </span>
 
@@ -445,7 +445,7 @@ export default function OnboardingPage() {
                             onChange={(e) =>
                               updateEntry(index, "title", e.target.value)
                             }
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                             placeholder="Example: Biology Midterm Study Guide"
                           />
                         </div>
@@ -459,7 +459,7 @@ export default function OnboardingPage() {
                             onChange={(e) =>
                               updateEntry(index, "source", e.target.value)
                             }
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                             placeholder="Paste a link or quick note here"
                           />
                         </div>
@@ -474,7 +474,7 @@ export default function OnboardingPage() {
                               updateEntry(index, "usefulness", e.target.value)
                             }
                             rows={3}
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
                             placeholder="Example: Covers chapters 1–4"
                           />
                         </div>
@@ -496,7 +496,7 @@ export default function OnboardingPage() {
                     type="button"
                     onClick={createStarterVault}
                     disabled={isSaving}
-                    className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3d6882] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isSaving ? "Organizing..." : "Organize my vault"}
                   </button>
@@ -534,8 +534,8 @@ export default function OnboardingPage() {
                     </ul>
                   </div>
 
-                  <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5 text-left">
-                    <span className="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold text-indigo-700">
+                  <div className="rounded-2xl border border-[#b8d4e8] bg-[#ebf2f8] p-5 text-left">
+                    <span className="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#4a7a9b]">
                       After
                     </span>
 
@@ -551,7 +551,7 @@ export default function OnboardingPage() {
                   {createdVaultId ? (
                     <Link
                       href={`/vaults/${createdVaultId}`}
-                      className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+                      className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3d6882]"
                     >
                       Go to my vault
                     </Link>

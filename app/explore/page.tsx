@@ -280,7 +280,7 @@ export default async function ExplorePage({
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <p className="mb-3 inline-flex rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700">
+              <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
                 Explore Public Vaults
               </p>
 
@@ -318,19 +318,19 @@ export default async function ExplorePage({
         {featuredVault && (
           <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
             <FeaturedVaultToggle>
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-              <div className="mb-4 inline-flex rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700">
+            <div className="rounded-3xl border border-[#e8d8c8] bg-[#F1DFCA] p-6 shadow-sm sm:p-8">
+              <div className="mb-4 inline-flex rounded-full bg-white/70 px-3 py-1 text-sm font-semibold text-[#F69149]">
                 Featured Vault
               </div>
 
               <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
                 <div>
-                  <h2 className="text-3xl font-bold tracking-tight text-slate-950">
+                  <h2 className="text-3xl font-bold tracking-tight text-[#553F28]">
                     {getVaultName(featuredVault)}
                   </h2>
 
                   {featuredVault.description && (
-                    <p className="mt-3 text-base leading-7 text-slate-600">
+                    <p className="mt-3 text-base leading-7 text-[#8a7060]">
                       {featuredVault.description}
                     </p>
                   )}
@@ -338,7 +338,7 @@ export default async function ExplorePage({
                   <div className="mt-6">
                     <Link
                       href={`/vaults/${featuredVault.id}`}
-                      className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+                      className="inline-flex items-center justify-center rounded-xl border border-[#553F28] bg-white px-5 py-3 text-sm font-semibold text-[#553F28] shadow-sm transition hover:bg-[#553F28] hover:text-white"
                     >
                       Open Vault
                     </Link>
@@ -350,8 +350,8 @@ export default async function ExplorePage({
                   />
                 </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-slate-500">
+                <div className="rounded-2xl border border-[#e8d8c8] bg-white p-5">
+                  <h3 className="text-sm font-bold uppercase tracking-wide text-[#8a7060]">
                     Inside this vault
                   </h3>
 
@@ -361,20 +361,20 @@ export default async function ExplorePage({
                         <Link
                           key={entry.id}
                           href={`/entry/${entry.id}/edit`}
-                          className="block rounded-2xl border border-slate-200 bg-white p-4 transition hover:border-indigo-300 hover:bg-indigo-50"
+                          className="block rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4 transition hover:border-[#F69149] hover:bg-white"
                         >
-                          <p className="text-lg font-semibold text-indigo-600">
+                          <p className="text-base font-semibold text-[#553F28]">
                             {entry.title || "Untitled Entry"}
                           </p>
 
                           {entry.description && (
-                            <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+                            <p className="mt-2 line-clamp-2 text-sm text-[#8a7060]">
                               {entry.description}
                             </p>
                           )}
 
                           {entry.notes && (
-                            <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+                            <p className="mt-2 line-clamp-2 text-sm text-[#8a7060]">
                               {entry.notes}
                             </p>
                           )}
@@ -384,7 +384,7 @@ export default async function ExplorePage({
                               {getEntryTagNames(entry).map((tag) => (
                                 <span
                                   key={tag}
-                                  className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600"
+                                  className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]"
                                 >
                                   #{tag}
                                 </span>
@@ -394,7 +394,7 @@ export default async function ExplorePage({
                         </Link>
                       ))
                     ) : (
-                      <p className="text-sm text-slate-500">
+                      <p className="text-sm text-[#8a7060]">
                         No entries have been added yet.
                       </p>
                     )}
@@ -417,7 +417,7 @@ export default async function ExplorePage({
                 name="q"
                 defaultValue={searchTerm}
                 placeholder="Search vaults by name, tag, or author..."
-                className="min-h-[48px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                className="min-h-[48px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#779EBF] focus:ring-4 focus:ring-[#ebf2f8]"
               />
 
               <button

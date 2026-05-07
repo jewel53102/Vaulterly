@@ -148,12 +148,11 @@ function AuthorFollowRow({
 export default async function ExplorePage({
   searchParams,
 }: {
-  searchParams?: {
-    q?: string;
-  };
+  searchParams?: Promise<{ q?: string }>;
 }) {
   const supabase = await createClient();
-  const searchTerm = searchParams?.q?.trim() || "";
+  const resolvedParams = await searchParams;
+  const searchTerm = resolvedParams?.q?.trim() || "";
 
   const {
     data: { user },

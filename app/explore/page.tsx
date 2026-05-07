@@ -1,9 +1,27 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import AppHeader from "@/app/components/AppHeader";
 import FollowButton from "@/app/components/FollowButton";
 import FeaturedVaultToggle from "@/app/components/FeaturedVaultToggle";
 import ExploreVaultGrid, { ExploreVault } from "@/app/components/ExploreVaultGrid";
+
+export const metadata: Metadata = {
+  title: "Explore Vaults",
+  description: "Discover curated vaults of tools, resources, and systems built for students.",
+  openGraph: {
+    title: "Explore Vaults — Vaulterly",
+    description: "Discover curated vaults of tools, resources, and systems built for students.",
+    url: "https://myvaulterly.com/explore",
+    siteName: "Vaulterly",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Explore Vaults — Vaulterly",
+    description: "Discover curated vaults of tools, resources, and systems built for students.",
+  },
+};
 
 type TagShape = { name: string }[] | { name: string } | null;
 

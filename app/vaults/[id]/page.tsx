@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import AppHeader from "@/app/components/AppHeader";
 import { createClient } from "@/utils/supabase/server";
 import { duplicatePublicVault } from "@/app/actions";
@@ -52,6 +53,41 @@ function getEntryTagNames(entry: EntryRow): string[] {
       })
       .filter(Boolean) ?? []
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data: vault } = await supabase
+    .from("vaults")
+    .select("name, title, description")
+    .eq("id", id)
+    .maybeSingle();
+
+  const name = vault?.name?.trim() || vault?.title?.trim() || "Untitled Vault";
+  const description = vault?.description?.trim() || "Explore this curated vault on Vaulterly.";
+
+  return {
+    title: name,
+    description,
+    openGraph: {
+      title: `${name} — Vaulterly`,
+      description,
+      url: `https://myvaulterly.com/vaults/${id}`,
+      siteName: "Vaulterly",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} — Vaulterly`,
+      description,
+    },
+  };
 }
 
 export default async function VaultPage({

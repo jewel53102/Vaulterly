@@ -1,11 +1,12 @@
 export default function sitemap() {
+  const base = 'https://myvaulterly.com';
   return [
     {
-      url: 'http://localhost:3000/',
+      url: `${base}/`,
       lastModified: new Date(),
     },
     {
-      url: 'http://localhost:3000/explore',
+      url: `${base}/explore`,
       lastModified: new Date(),
     },
   ]

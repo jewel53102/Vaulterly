@@ -21,7 +21,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                  Save your sources, notes, and study links once — and actually find them when the paper is due.
+                  Save your sources, notes, and study links once — then bring your whole vault into your AI when it&apos;s time to write.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -85,12 +85,19 @@ export default function HomePage() {
 
                     <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
                       <p className="text-sm font-semibold text-[#553F28]">
-                        YouTube — Piaget's stages explained (the good one)
+                        YouTube — Piaget&apos;s stages explained (the good one)
                       </p>
                       <p className="mt-1 text-sm text-[#8a7060]">
                         Way clearer than the textbook. Rewatch before the exam.
                       </p>
                     </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between border-t border-[#e8d8c8] pt-4">
+                    <p className="text-xs text-[#8a7060]">6 sources saved</p>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ebf2f8] px-3 py-1.5 text-xs font-semibold text-[#4a7a9b]">
+                      Copy vault context →
+                    </span>
                   </div>
                 </div>
               </div>
@@ -153,11 +160,52 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h3 className="text-lg font-bold text-[#779EBF]">Find it when it counts</h3>
+            <div className="rounded-3xl border border-[#d8e8f5] bg-[#ebf2f8] p-5 shadow-sm">
+              <h3 className="text-lg font-bold text-[#4a7a9b]">Bring it into your AI</h3>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Search by class, keyword, or tag the night before the deadline. It&apos;s there.
+                When it&apos;s time to write, copy your vault context into ChatGPT or Claude. Your AI now knows everything you researched.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* AI differentiator */}
+        <section className="border-y border-slate-200 bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+              <div>
+                <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
+                  The AI advantage
+                </p>
+
+                <h2 className="text-3xl font-bold tracking-tight text-slate-950">
+                  Your AI is only as good as the context you give it.
+                </h2>
+
+                <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
+                  Without sources, AI hallucinates citations and writes generic essays. With a vault, you give it everything you actually researched — and it writes from that.
+                </p>
+
+                <p className="mt-3 max-w-xl text-base leading-7 text-slate-600">
+                  Instead of pasting 12 different links into ChatGPT and hoping it reads them, your vault is already organized and ready to copy in one click.
+                </p>
+              </div>
+
+              <div className="grid gap-4">
+                <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Without Vaulterly</p>
+                  <p className="mt-2 text-base font-semibold text-slate-700">
+                    Re-search from scratch. Paste random links. Get a generic essay with made-up citations.
+                  </p>
+                </div>
+
+                <div className="rounded-3xl border border-[#d8e8f5] bg-[#ebf2f8] p-5 shadow-sm">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-[#4a7a9b]">With Vaulterly</p>
+                  <p className="mt-2 text-base font-semibold text-slate-700">
+                    Open your vault. Copy context. Drop it into your AI. It writes from your actual research.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -260,11 +308,11 @@ export default function HomePage() {
         <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div className="rounded-3xl bg-slate-950 p-8 text-center shadow-sm sm:p-10">
             <h2 className="text-3xl font-bold tracking-tight text-white">
-              Stop re-searching things you already found.
+              Build a vault this semester. Feed it your research. Write better papers.
             </h2>
 
             <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-300">
-              Build a vault for this semester. It takes less time than opening another tab.
+              Your AI needs context. Your vault is where you build it.
             </p>
 
             <Link

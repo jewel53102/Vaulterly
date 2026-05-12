@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import type { Metadata } from "next";
-import AppHeader from "@/app/components/AppHeader";
+import AppHeaderAuth from "@/app/components/AppHeaderAuth";
 import { createClient } from "@/utils/supabase/server";
 import { duplicatePublicVault } from "@/app/actions";
 import ExportVaultButton from "@/app/components/ExportVaultButton";
 import VaultEntrySearch from "@/app/components/VaultEntrySearch";
+import ShareButton from "@/app/components/ShareButton";
+import SharePromptBanner from "@/app/components/SharePromptBanner";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -70,22 +73,31 @@ export async function generateMetadata({
     .maybeSingle();
 
   const name = vault?.name?.trim() || vault?.title?.trim() || "Untitled Vault";
-  const description = vault?.description?.trim() || "Explore this curated vault on Vaulterly.";
+  const description =
+    vault?.description?.trim() ||
+    `Explore ${name} — a free student research vault on Vaulterly. Browse organized sources, notes, and study links.`;
+
+  const ogImageUrl = `/api/og?title=${encodeURIComponent(name)}&description=${encodeURIComponent(description)}`;
 
   return {
-    title: name,
+    title: `${name} — Free Study Vault`,
     description,
+    alternates: {
+      canonical: `https://myvaulterly.com/vaults/${id}`,
+    },
     openGraph: {
-      title: `${name} — Vaulterly`,
+      title: `${name} — Free Study Vault | Vaulterly`,
       description,
       url: `https://myvaulterly.com/vaults/${id}`,
       siteName: "Vaulterly",
       type: "website",
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${name} — Vaulterly` }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${name} — Vaulterly`,
+      title: `${name} — Free Study Vault | Vaulterly`,
       description,
+      images: [ogImageUrl],
     },
   };
 }
@@ -176,7 +188,13 @@ export default async function VaultPage({
 
   return (
     <>
-      <AppHeader />
+      <AppHeaderAuth />
+
+      {vault.is_public && (
+        <Suspense>
+          <SharePromptBanner vaultId={vault.id} />
+        </Suspense>
+      )}
 
       <main className="min-h-screen bg-slate-50">
         <section className="border-b border-slate-200 bg-white">
@@ -236,23 +254,14 @@ export default async function VaultPage({
                 {isOwner && (
                   <Link
                     href={`/vaults/${vault.id}/new`}
-                    className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#ebf2f8]0"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5a87ac]"
                   >
                     Add Entry
                   </Link>
                 )}
 
-                {vault.is_public && !isOwner && (
-                  <form action={duplicatePublicVault}>
-                    <input type="hidden" name="vaultId" value={vault.id} />
-
-                    <button
-                      type="submit"
-                      className="inline-flex w-full items-center justify-center rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
-                    >
-                      Duplicate to My Vaults
-                    </button>
-                  </form>
+                {vault.is_public && (
+                  <ShareButton url={`/vaults/${vault.id}`} label="Share Vault" />
                 )}
 
                 <ExportVaultButton vault={exportData} />
@@ -260,6 +269,54 @@ export default async function VaultPage({
             </div>
           </div>
         </section>
+
+        {/* Visitor CTA — prominent conversion banner for non-owners */}
+        {vault.is_public && !isOwner && (
+          <section className="border-b border-slate-200 bg-white">
+            <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8">
+              <div className="flex flex-col gap-4 rounded-2xl border border-[#d8e8f5] bg-[#ebf2f8] p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-semibold text-[#2c5f7a]">
+                    Save this vault to your account
+                  </p>
+                  <p className="mt-0.5 text-sm text-[#4a7a9b]">
+                    {user
+                      ? "Copy it to your vaults and use it as AI context for your own essays."
+                      : "Sign up free to save a copy and drop it into ChatGPT or Claude when you write."}
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-2">
+                  {user ? (
+                    <form action={duplicatePublicVault}>
+                      <input type="hidden" name="vaultId" value={vault.id} />
+                      <button
+                        type="submit"
+                        className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5a87ac]"
+                      >
+                        Save a copy
+                      </button>
+                    </form>
+                  ) : (
+                    <>
+                      <Link
+                        href={`/signup?next=/vaults/${vault.id}`}
+                        className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5a87ac]"
+                      >
+                        Sign up free
+                      </Link>
+                      <Link
+                        href={`/login?next=/vaults/${vault.id}`}
+                        className="inline-flex items-center justify-center rounded-xl border border-[#b8d4e8] bg-white px-4 py-2.5 text-sm font-semibold text-[#4a7a9b] shadow-sm transition hover:bg-[#ebf2f8]"
+                      >
+                        Log in
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
           <VaultEntrySearch
@@ -269,6 +326,36 @@ export default async function VaultPage({
           />
         </section>
       </main>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://myvaulterly.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Browse Research Vaults",
+                item: "https://myvaulterly.com/explore",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: getVaultName(vault),
+                item: `https://myvaulterly.com/vaults/${vault.id}`,
+              },
+            ],
+          }),
+        }}
+      />
     </>
   );
 }

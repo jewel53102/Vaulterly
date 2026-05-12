@@ -5,22 +5,29 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 
-type Profile = {
-  username: string | null
+type UserMenuProps = {
+  initialEmail?: string
+  initialUsername?: string
 }
 
-export default function UserMenu() {
+export default function UserMenu({
+  initialEmail = '',
+  initialUsername = '',
+}: UserMenuProps) {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
 
   const [open, setOpen] = useState(false)
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState(initialEmail)
+  const [username, setUsername] = useState(initialUsername)
   const [loggingOut, setLoggingOut] = useState(false)
 
   const menuRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
+    // Server already provided user data — skip the client fetch
+    if (initialEmail) return
+
     async function loadUser() {
       const {
         data: { user },
@@ -34,18 +41,17 @@ export default function UserMenu() {
         .from('profiles')
         .select('username')
         .eq('id', user.id)
-        .maybeSingle<Profile>()
+        .maybeSingle<{ username: string | null }>()
 
       setUsername(profile?.username || '')
     }
 
     loadUser()
-  }, [supabase])
+  }, [supabase, initialEmail])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (!menuRef.current) return
-
       if (!menuRef.current.contains(event.target as Node)) {
         setOpen(false)
       }

@@ -5,12 +5,18 @@ type AppHeaderProps = {
   title?: string;
   subtitle?: string;
   showNewVaultButton?: boolean;
+  isLoggedIn?: boolean;
+  userEmail?: string;
+  username?: string;
 };
 
 export default function AppHeader({
   title,
   subtitle,
   showNewVaultButton = true,
+  isLoggedIn = false,
+  userEmail = "",
+  username = "",
 }: AppHeaderProps) {
   return (
     <header className="app-header">
@@ -32,21 +38,39 @@ export default function AppHeader({
         </div>
 
         <div className="app-header-actions">
-          <Link href="/dashboard" className="button button-secondary button-small">
-            Dashboard
-          </Link>
-
           <Link href="/explore" className="button button-secondary button-small">
             Explore
           </Link>
 
-          {showNewVaultButton ? (
-            <Link href="/welcome" className="button button-primary button-small">
-              + New Vault
-            </Link>
-          ) : null}
+          <Link href="/blog" className="button button-secondary button-small">
+            Blog
+          </Link>
 
-          <UserMenu />
+          {isLoggedIn ? (
+            <>
+              <Link href="/dashboard" className="button button-secondary button-small">
+                Dashboard
+              </Link>
+
+              {showNewVaultButton ? (
+                <Link href="/welcome" className="button button-primary button-small">
+                  + New Vault
+                </Link>
+              ) : null}
+
+              <UserMenu initialEmail={userEmail} initialUsername={username} />
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="button button-secondary button-small">
+                Log In
+              </Link>
+
+              <Link href="/signup" className="button button-primary button-small">
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

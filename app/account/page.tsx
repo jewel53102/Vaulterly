@@ -227,6 +227,29 @@ export default function AccountPage() {
     router.refresh()
   }
 
+  async function deleteAccount() {
+    const confirmed = window.prompt(
+      'This permanently deletes your account, all vaults, and all saved entries. This cannot be undone.\n\nType DELETE to confirm.'
+    )
+
+    if (confirmed !== 'DELETE') return
+
+    setSaving(true)
+
+    const res = await fetch('/api/account/delete', { method: 'POST' })
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      showToast(body.error || 'Account deletion failed. Please contact support.')
+      setSaving(false)
+      return
+    }
+
+    await supabase.auth.signOut()
+    router.push('/?deleted=1')
+    router.refresh()
+  }
+
   if (loading) {
     return (
       <main className="account-page">
@@ -421,6 +444,23 @@ export default function AccountPage() {
             className="button button-danger button-small"
           >
             Sign Out
+          </button>
+        </section>
+
+        <section className="account-card account-danger-card">
+          <h2>Delete Account</h2>
+          <p>
+            Permanently delete your account, all your vaults, and all saved
+            entries. This cannot be undone.
+          </p>
+
+          <button
+            type="button"
+            onClick={deleteAccount}
+            disabled={saving}
+            className="button button-danger button-small"
+          >
+            {saving ? 'Deleting...' : 'Delete My Account'}
           </button>
         </section>
       </div>

@@ -236,7 +236,7 @@ export default function EditEntryPage() {
   if (isLoading) {
     return (
       <>
-        <AppHeader />
+        <AppHeader isLoggedIn={true} />
 
         <main className="vault-page">
           <div className="vault-container-narrow">
@@ -251,7 +251,7 @@ export default function EditEntryPage() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isLoggedIn={true} />
 
       <main className="vault-page">
         <div className="vault-container-narrow">

@@ -1,10 +1,18 @@
 import Link from "next/link";
-import AppHeader from "@/app/components/AppHeader";
+import AppHeaderAuth from "@/app/components/AppHeaderAuth";
+import { getAllPosts } from "@/lib/blog";
+
+const categoryColors: Record<string, string> = {
+  "AI Study Tips": "bg-[#ebf2f8] text-[#4a7a9b]",
+  "Study Skills": "bg-emerald-50 text-emerald-700",
+  Tools: "bg-amber-50 text-amber-700",
+};
 
 export default function HomePage() {
+  const posts = getAllPosts();
   return (
     <>
-      <AppHeader />
+      <AppHeaderAuth />
 
       <main className="min-h-screen bg-slate-50">
         {/* Hero */}
@@ -187,8 +195,19 @@ export default function HomePage() {
                 </p>
 
                 <p className="mt-3 max-w-xl text-base leading-7 text-slate-600">
-                  Instead of pasting 12 different links into ChatGPT and hoping it reads them, your vault is already organized and ready to copy in one click.
+                  One click copies your entire vault — titles, notes, and URLs — as plain text. Paste it into any AI chat. Your AI now has everything you found, in context.
                 </p>
+
+                <p className="mt-3 max-w-xl text-sm text-slate-500">
+                  Works with ChatGPT, Claude, Gemini, Perplexity, and any AI that accepts a text prompt.
+                </p>
+
+                <Link
+                  href="/how-it-works"
+                  className="mt-5 inline-flex items-center text-sm font-semibold text-[#4a7a9b] hover:underline"
+                >
+                  See exactly how it works →
+                </Link>
               </div>
 
               <div className="grid gap-4">
@@ -202,8 +221,13 @@ export default function HomePage() {
                 <div className="rounded-3xl border border-[#d8e8f5] bg-[#ebf2f8] p-5 shadow-sm">
                   <p className="text-xs font-semibold uppercase tracking-widest text-[#4a7a9b]">With Vaulterly</p>
                   <p className="mt-2 text-base font-semibold text-slate-700">
-                    Open your vault. Copy context. Drop it into your AI. It writes from your actual research.
+                    Open your vault. Copy context. Paste into your AI. Then ask it to:
                   </p>
+                  <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+                    <li>→ Outline your argument using only the sources you saved</li>
+                    <li>→ Draft your intro paragraph from your actual research</li>
+                    <li>→ Find gaps — what did you miss before writing?</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -229,26 +253,44 @@ export default function HomePage() {
             </div>
 
             <div className="grid gap-5 sm:grid-cols-3">
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+              <Link
+                href="/essays"
+                className="group rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:shadow-md hover:border-slate-300"
+              >
                 <h3 className="text-lg font-bold text-[#779EBF]">Essays &amp; research papers</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Every source cited, annotated, and organized before you start writing.
                 </p>
-              </div>
+                <span className="mt-3 inline-block text-sm font-medium text-[#4a7a9b] group-hover:underline">
+                  Learn more →
+                </span>
+              </Link>
 
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+              <Link
+                href="/exam-prep"
+                className="group rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:shadow-md hover:border-slate-300"
+              >
                 <h3 className="text-lg font-bold text-[#779EBF]">Exam prep</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   All your study materials, videos, and notes in one searchable place.
                 </p>
-              </div>
+                <span className="mt-3 inline-block text-sm font-medium text-[#4a7a9b] group-hover:underline">
+                  Learn more →
+                </span>
+              </Link>
 
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+              <Link
+                href="/group-projects"
+                className="group rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:shadow-md hover:border-slate-300"
+              >
                 <h3 className="text-lg font-bold text-[#779EBF]">Group projects</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Make your vault public and share the link — everyone gets the same sources.
                 </p>
-              </div>
+                <span className="mt-3 inline-block text-sm font-medium text-[#4a7a9b] group-hover:underline">
+                  Learn more →
+                </span>
+              </Link>
             </div>
 
             <p className="mt-6 text-sm text-slate-500">
@@ -300,6 +342,65 @@ export default function HomePage() {
               className="mt-6 inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
             >
               Browse student vaults
+            </Link>
+          </div>
+        </section>
+
+        {/* From the blog */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="mb-3 inline-flex rounded-full bg-[#ebf2f8] px-3 py-1 text-sm font-medium text-[#4a7a9b]">
+                From the blog
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-950">
+                Study tips &amp; AI writing guides
+              </h2>
+            </div>
+            <Link
+              href="/blog"
+              className="hidden shrink-0 text-sm font-semibold text-[#4a7a9b] hover:underline sm:block"
+            >
+              All articles →
+            </Link>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+              >
+                <div className="mb-3 flex items-center gap-2">
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                      categoryColors[post.category] ?? "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    {post.category}
+                  </span>
+                  <span className="text-xs text-slate-400">{post.readingTime}</span>
+                </div>
+
+                <h3 className="text-base font-semibold leading-snug text-slate-900 group-hover:text-[#4a7a9b] transition-colors">
+                  {post.title}
+                </h3>
+
+                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-500">
+                  {post.description}
+                </p>
+
+                <span className="mt-4 text-sm font-medium text-[#4a7a9b]">
+                  Read article →
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-6 sm:hidden">
+            <Link href="/blog" className="text-sm font-semibold text-[#4a7a9b] hover:underline">
+              All articles →
             </Link>
           </div>
         </section>

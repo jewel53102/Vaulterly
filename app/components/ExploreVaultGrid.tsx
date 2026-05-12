@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import CopyVaultButton from "@/app/components/CopyVaultLinkButton";
+import ShareButton from "@/app/components/ShareButton";
 
 export type ExploreVault = {
   id: string;
@@ -58,13 +59,20 @@ function VaultCard({ vault, isLoggedIn }: { vault: ExploreVault; isLoggedIn: boo
         </div>
       )}
 
-      <div className="mt-auto grid gap-3 pt-5 sm:grid-cols-2">
-        <Link
-          href={`/vaults/${vault.id}`}
-          className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
-        >
-          View Vault
-        </Link>
+      <div className="mt-auto pt-5 space-y-2">
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href={`/vaults/${vault.id}`}
+            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+          >
+            View Vault
+          </Link>
+          <ShareButton
+            url={`/vaults/${vault.id}`}
+            label="Share"
+            className="inline-flex items-center justify-center rounded-xl border border-[#d8e8f5] bg-[#ebf2f8] px-4 py-2.5 text-sm font-semibold text-[#4a7a9b] transition hover:bg-[#d8e8f5]"
+          />
+        </div>
         <CopyVaultButton vaultId={vault.id} isLoggedIn={isLoggedIn} compact />
       </div>
     </article>

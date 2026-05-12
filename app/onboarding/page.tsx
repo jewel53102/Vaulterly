@@ -285,7 +285,7 @@ export default function OnboardingPage() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isLoggedIn={true} />
 
       <main className="min-h-screen bg-slate-50">
         <section className="border-b border-slate-200 bg-white">

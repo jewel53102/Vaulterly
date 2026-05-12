@@ -1,7 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
 import FollowButton from "@/app/components/FollowButton";
-import AppHeader from "@/app/components/AppHeader";
+import AppHeaderAuth from "@/app/components/AppHeaderAuth";
 
 type ProfilePageProps = {
   params: Promise<{
@@ -34,6 +35,41 @@ type ProfileRow = {
 
 function getVaultName(vault: VaultRow) {
   return vault.name?.trim() || vault.title?.trim() || "Untitled Vault";
+}
+
+export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
+  const { userId } = await params;
+  const supabase = await createClient();
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name, username, bio")
+    .eq("id", userId)
+    .maybeSingle();
+
+  const displayName =
+    profile?.display_name?.trim() || profile?.username?.trim() || "This student";
+  const title = `${displayName}'s Research Vaults`;
+  const description =
+    profile?.bio?.trim() ||
+    `Browse ${displayName}'s public study vaults on Vaulterly — organized sources, notes, and research by subject.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | Vaulterly`,
+      description,
+      url: `https://myvaulterly.com/profiles/${userId}`,
+      siteName: "Vaulterly",
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Vaulterly`,
+      description,
+    },
+  };
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
@@ -89,7 +125,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
   return (
     <>
-      <AppHeader />
+      <AppHeaderAuth />
 
       <main className="min-h-screen bg-slate-50">
         <section className="border-b border-slate-200 bg-white">
@@ -237,6 +273,42 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           )}
         </section>
       </main>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://myvaulterly.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: `${displayName}'s Research Vaults`,
+                item: `https://myvaulterly.com/profiles/${userId}`,
+              },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            name: `${displayName}'s Research Vaults`,
+            url: `https://myvaulterly.com/profiles/${userId}`,
+            description: `Browse ${displayName}'s public study vaults on Vaulterly — organized sources, notes, and research by subject.`,
+          }),
+        }}
+      />
     </>
   );
 }

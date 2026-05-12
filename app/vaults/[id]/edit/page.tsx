@@ -17,6 +17,7 @@ export default function EditVaultPage() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [initialIsPublic, setInitialIsPublic] = useState(false);
   const [entryCount, setEntryCount] = useState(0);
   const [emailConfirmed, setEmailConfirmed] = useState(false);
 
@@ -73,6 +74,7 @@ export default function EditVaultPage() {
       setDescription(vault.description || "");
       setCategory(vault.category || "");
       setIsPublic(Boolean(vault.is_public));
+      setInitialIsPublic(Boolean(vault.is_public));
       setEntryCount(count || 0);
       setIsLoading(false);
     }
@@ -147,7 +149,8 @@ export default function EditVaultPage() {
       return;
     }
 
-    router.push(`/vaults/${vaultId}`);
+    const justPublished = isPublic && !initialIsPublic;
+    router.push(`/vaults/${vaultId}${justPublished ? "?published=1" : ""}`);
     router.refresh();
   }
 
@@ -203,7 +206,7 @@ export default function EditVaultPage() {
   if (isLoading) {
     return (
       <>
-        <AppHeader />
+        <AppHeader isLoggedIn={true} />
 
         <main className="vault-page">
           <div className="vault-container-narrow">
@@ -220,7 +223,7 @@ export default function EditVaultPage() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isLoggedIn={true} />
 
       <main className="vault-page">
         <div className="vault-container-narrow">

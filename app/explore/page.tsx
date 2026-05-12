@@ -1,25 +1,28 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { createClient } from "@/utils/supabase/server";
-import AppHeader from "@/app/components/AppHeader";
+import AppHeaderAuth from "@/app/components/AppHeaderAuth";
 import FollowButton from "@/app/components/FollowButton";
 import FeaturedVaultToggle from "@/app/components/FeaturedVaultToggle";
 import ExploreVaultGrid, { ExploreVault } from "@/app/components/ExploreVaultGrid";
 
 export const metadata: Metadata = {
-  title: "Explore Vaults",
-  description: "Discover curated vaults of tools, resources, and systems built for students.",
+  title: "Browse Student Research Vaults",
+  description:
+    "Explore free research vaults built by students. Find organized sources, study materials, and notes by subject. Copy the structure for your own classes.",
   openGraph: {
-    title: "Explore Vaults — Vaulterly",
-    description: "Discover curated vaults of tools, resources, and systems built for students.",
+    title: "Browse Student Research Vaults | Vaulterly",
+    description:
+      "Explore free research vaults built by students. Find organized sources, study materials, and notes by subject. Copy the structure for your own classes.",
     url: "https://myvaulterly.com/explore",
     siteName: "Vaulterly",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Explore Vaults — Vaulterly",
-    description: "Discover curated vaults of tools, resources, and systems built for students.",
+    title: "Browse Student Research Vaults | Vaulterly",
+    description:
+      "Explore free research vaults built by students. Find organized sources, study materials, and notes by subject. Copy the structure for your own classes.",
   },
 };
 
@@ -274,7 +277,7 @@ export default async function ExplorePage({
 
   return (
     <>
-      <AppHeader />
+      <AppHeaderAuth />
 
       <main className="min-h-screen bg-slate-50">
         <section className="border-b border-slate-200 bg-white">
@@ -451,6 +454,30 @@ export default async function ExplorePage({
           <ExploreVaultGrid vaults={exploreVaults} isLoggedIn={isLoggedIn} />
         </section>
       </main>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://myvaulterly.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Browse Research Vaults",
+                item: "https://myvaulterly.com/explore",
+              },
+            ],
+          }),
+        }}
+      />
     </>
   );
 }

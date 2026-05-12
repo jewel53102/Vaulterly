@@ -5,9 +5,14 @@ import { useState } from 'react'
 type ShareButtonProps = {
   url: string
   label?: string
+  className?: string
 }
 
-export default function ShareButton({ url, label = 'Share' }: ShareButtonProps) {
+export default function ShareButton({
+  url,
+  label = 'Share',
+  className = 'button button-secondary button-small',
+}: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
 
   async function copyLink() {
@@ -25,7 +30,7 @@ export default function ShareButton({ url, label = 'Share' }: ShareButtonProps) 
     <button
       type="button"
       onClick={copyLink}
-      className="button button-secondary button-small"
+      className={className}
     >
       {copied ? 'Copied!' : label}
     </button>

@@ -116,7 +116,7 @@ export default function NewEntryPage() {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isLoggedIn={true} />
 
       <main className="vault-page">
         <div className="vault-container-narrow">

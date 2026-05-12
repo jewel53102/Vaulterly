@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import AppHeader from "@/app/components/AppHeader";
+import type { Metadata } from "next";
+import AppHeaderAuth from "@/app/components/AppHeaderAuth";
 import FollowButton from "@/app/components/FollowButton";
 import { createClient } from "@/utils/supabase/server";
 
@@ -9,6 +10,41 @@ type PageProps = {
     username: string;
   }>;
 };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { username } = await params;
+  const decodedUsername = decodeURIComponent(username);
+  const supabase = await createClient();
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name, username, bio")
+    .eq("username", decodedUsername)
+    .maybeSingle();
+
+  const displayName = profile?.display_name?.trim() || profile?.username?.trim() || decodedUsername;
+  const title = `${displayName}'s Research Vaults`;
+  const description =
+    profile?.bio?.trim() ||
+    `Browse ${displayName}'s public study vaults on Vaulterly — organized sources, notes, and research by subject.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | Vaulterly`,
+      description,
+      url: `https://myvaulterly.com/u/${decodedUsername}`,
+      siteName: "Vaulterly",
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Vaulterly`,
+      description,
+    },
+  };
+}
 
 export default async function UserProfilePage({ params }: PageProps) {
   const { username } = await params;
@@ -25,6 +61,9 @@ export default async function UserProfilePage({ params }: PageProps) {
   if (profileError || !profile) {
     notFound();
   }
+
+  const displayName =
+    profile.display_name?.trim() || profile.username?.trim() || decodedUsername;
 
   const { data: vaults, error: vaultsError } = await supabase
     .from("vaults")
@@ -54,7 +93,7 @@ export default async function UserProfilePage({ params }: PageProps) {
 
   return (
     <>
-      <AppHeader />
+      <AppHeaderAuth />
 
       <main className="vault-page">
         <div className="vault-container">
@@ -131,6 +170,42 @@ export default async function UserProfilePage({ params }: PageProps) {
           )}
         </div>
       </main>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://myvaulterly.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: `${displayName}'s Research Vaults`,
+                item: `https://myvaulterly.com/u/${decodedUsername}`,
+              },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            name: `${displayName}'s Research Vaults`,
+            url: `https://myvaulterly.com/u/${decodedUsername}`,
+            description: `Browse ${displayName}'s public study vaults on Vaulterly — organized sources, notes, and research by subject.`,
+          }),
+        }}
+      />
     </>
   );
 }

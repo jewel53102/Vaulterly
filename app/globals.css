@@ -2621,3 +2621,136 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Blog / Article Prose ---------- */
+
+.prose-article {
+  color: #374151;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.prose-article h2 {
+  margin: 2.25rem 0 0.75rem;
+  color: #111827;
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.prose-article h3 {
+  margin: 1.75rem 0 0.5rem;
+  color: #1f2937;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.prose-article p {
+  margin: 0 0 1.25rem;
+}
+
+.prose-article p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-article strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+.prose-article em {
+  font-style: italic;
+}
+
+.prose-article a {
+  color: #4a7a9b;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(74, 122, 155, 0.35);
+  text-underline-offset: 2px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.prose-article a:hover {
+  color: #779EBF;
+  text-decoration-color: #779EBF;
+}
+
+.prose-article ul,
+.prose-article ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.prose-article li {
+  margin-bottom: 0.4rem;
+}
+
+.prose-article li > p {
+  margin: 0;
+}
+
+.prose-article blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid #779EBF;
+  border-radius: 0 8px 8px 0;
+  background: #ebf2f8;
+  color: #374151;
+  font-style: italic;
+}
+
+.prose-article blockquote p {
+  margin: 0;
+}
+
+.prose-article code {
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 0.9em;
+}
+
+.prose-article pre {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: #1f2937;
+  color: #f9fafb;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.prose-article pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose-article hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.prose-article > *:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 640px) {
+  .prose-article {
+    font-size: 1rem;
+  }
+
+  .prose-article h2 {
+    font-size: 1.3rem;
+  }
+}

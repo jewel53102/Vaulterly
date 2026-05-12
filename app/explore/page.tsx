@@ -64,6 +64,7 @@ type VaultRow = {
   category: string | null;
   is_public: boolean | null;
   created_at: string | null;
+  updated_at: string | null;
   entries?: EntryRow[];
   vault_tags?: {
     tags?: TagShape;
@@ -201,6 +202,7 @@ export default async function ExplorePage({
       category,
       is_public,
       created_at,
+      updated_at,
       vault_tags (
         tags (
           name
@@ -276,12 +278,8 @@ export default async function ExplorePage({
     description: vault.description ?? "",
     badge: "",
     tags: getVaultTagNames(vault),
-    entries: (vault.entries ?? []).map((entry) => ({
-      id: entry.id,
-      title: entry.title ?? "",
-      url: entry.url,
-      description: entry.description,
-    })),
+    entryCount: vault.entries?.length ?? 0,
+    updatedAt: vault.updated_at ?? vault.created_at ?? "",
   }));
 
   return (

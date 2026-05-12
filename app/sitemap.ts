@@ -1,6 +1,7 @@
 import { getAllPosts } from '@/lib/blog';
+import { createAdminClient } from '@/utils/supabase/admin';
 
-export default function sitemap() {
+export default async function sitemap() {
   const base = 'https://myvaulterly.com';
 
   const staticRoutes = [
@@ -23,5 +24,19 @@ export default function sitemap() {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...blogRoutes];
+  const supabase = createAdminClient();
+  const { data: vaults } = await supabase
+    .from('vaults')
+    .select('id, updated_at')
+    .eq('is_public', true)
+    .eq('public_status', 'approved');
+
+  const vaultRoutes = (vaults ?? []).map((vault) => ({
+    url: `${base}/vaults/${vault.id}`,
+    lastModified: new Date(vault.updated_at),
+    changeFrequency: 'weekly' as const,
+    priority: 0.5,
+  }));
+
+  return [...staticRoutes, ...blogRoutes, ...vaultRoutes];
 }

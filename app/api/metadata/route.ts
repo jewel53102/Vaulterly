@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
     const response = await fetch(normalizedUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 HoardVaultBot/1.0",
+        "User-Agent": "Mozilla/5.0 VaulterlyBot/1.0 (+https://myvaulterly.com/bot)",
       },
       signal: AbortSignal.timeout(8000),
     });

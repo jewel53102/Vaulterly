@@ -37,8 +37,10 @@ type FollowedVault = {
   title: string | null
   description: string | null
   created_at: string
+  updated_at: string | null
   user_id: string
   username: string | null
+  entry_count: number
 }
 
 type DashboardTag = {
@@ -71,6 +73,20 @@ type OnboardingProgress = {
   hasPublicVault: boolean
   followsTwoCreators: boolean
   hasFollowedVaults: boolean
+}
+
+function formatRelativeDate(dateString: string | null): string {
+  if (!dateString) return ''
+  const diffDays = Math.floor(
+    (Date.now() - new Date(dateString).getTime()) / 86_400_000
+  )
+  if (diffDays === 0) return 'today'
+  if (diffDays === 1) return '1 day ago'
+  if (diffDays < 7) return `${diffDays} days ago`
+  if (diffDays < 14) return '1 week ago'
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
+  if (diffDays < 60) return '1 month ago'
+  return `${Math.floor(diffDays / 30)} months ago`
 }
 
 function getVaultName(vault: {
@@ -259,7 +275,7 @@ export default function DashboardPage() {
 
     const { data: followedVaultData, error: followedVaultError } = await supabase
       .from('vaults')
-      .select('id, name, title, description, created_at, user_id')
+      .select('id, name, title, description, created_at, updated_at, user_id, entries(id)')
       .in('user_id', followedIds)
       .eq('is_public', true)
       .order('created_at', { ascending: false })
@@ -297,8 +313,10 @@ export default function DashboardPage() {
         title: vault.title,
         description: vault.description,
         created_at: vault.created_at,
+        updated_at: vault.updated_at ?? null,
         user_id: vault.user_id,
         username: profileMap.get(vault.user_id) || null,
+        entry_count: Array.isArray(vault.entries) ? vault.entries.length : 0,
       })
     )
 
@@ -871,50 +889,60 @@ export default function DashboardPage() {
               </div>
             ) : (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {followedVaults.map((vault) => (
+                {followedVaults.map((vault) => {
+                  const relativeDate = formatRelativeDate(vault.updated_at ?? vault.created_at)
+                  const resourceLabel = vault.entry_count === 1 ? 'resource' : 'resources'
+                  return (
                   <article
                     key={vault.id}
-                    className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    className="relative flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   >
-                    <div className="mb-4 flex items-center justify-between gap-3">
+                    {/* Stretched link */}
+                    <Link
+                      href={`/vaults/${vault.id}`}
+                      className="absolute inset-0 z-0 rounded-3xl"
+                      aria-label={`Open ${getVaultName(vault)}`}
+                    />
+
+                    {/* Header: Public badge + Share pill */}
+                    <div className="relative z-10 flex items-center justify-between gap-3">
                       <span className="rounded-full bg-[#ebf2f8] px-3 py-1 text-xs font-medium text-[#4a7a9b]">
                         Public
                       </span>
-
-                      {vault.username && (
-                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                          @{vault.username}
-                        </span>
-                      )}
+                      <ShareButton
+                        url={`/vaults/${vault.id}`}
+                        label="Share"
+                        className="rounded-full border border-[#d8e8f5] bg-[#ebf2f8] px-3 py-1 text-xs font-semibold text-[#4a7a9b] transition hover:bg-[#d8e8f5]"
+                      />
                     </div>
 
-                    <h3 className="text-lg font-bold leading-7 text-blue-500">
+                    <h3 className="relative z-10 mt-3 text-lg font-bold leading-7 text-slate-950">
                       {getVaultName(vault)}
                     </h3>
 
-                    <p className="mt-2 line-clamp-3 min-h-[72px] text-sm leading-6 text-slate-600">
-                      {vault.description ||
-                        'A public vault from a creator you follow.'}
+                    {vault.username && (
+                      <p className="relative z-10 mt-0.5 text-xs text-slate-500">
+                        by @{vault.username}
+                      </p>
+                    )}
+
+                    {vault.description && (
+                      <p className="relative z-10 mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+                        {vault.description}
+                      </p>
+                    )}
+
+                    <p className="relative z-10 mt-3 text-xs text-slate-400">
+                      {vault.entry_count} {resourceLabel}
+                      {relativeDate ? ` · Updated ${relativeDate}` : ''}
                     </p>
 
-                    <div className="mt-auto pt-5 space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        <Link
-                          href={`/vaults/${vault.id}`}
-                          className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
-                        >
-                          View Vault
-                        </Link>
-                        <ShareButton
-                          url={`/vaults/${vault.id}`}
-                          label="Share"
-                          className="inline-flex items-center justify-center rounded-xl border border-[#d8e8f5] bg-[#ebf2f8] px-4 py-2.5 text-sm font-semibold text-[#4a7a9b] transition hover:bg-[#d8e8f5]"
-                        />
-                      </div>
+                    <div className="relative z-10 mt-auto pt-5">
                       <CopyVaultButton vaultId={vault.id} isLoggedIn={true} compact />
                     </div>
                   </article>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>

@@ -30,11 +30,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Vaulterly",
       type: "article",
       publishedTime: post.publishedAt,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description)}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${post.title} | Vaulterly`,
       description: post.description,
+      images: [
+        `/api/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(post.description)}`,
+      ],
     },
   };
 }

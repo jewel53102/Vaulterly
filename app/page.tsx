@@ -57,55 +57,74 @@ export default function HomePage() {
                       Student Research
                     </span>
                     <span className="rounded-full bg-[#faf6f2] px-3 py-1 text-xs font-semibold text-[#553F28]">
-                      Public
+                      Due Friday
                     </span>
                   </div>
 
                   <h2 className="text-xl font-bold leading-7 text-[#553F28]">
-                    Psychology 101 Study Vault
+                    The Milgram paper — Conformity &amp; Ethics
                   </h2>
 
                   <p className="mt-2 text-sm leading-6 text-[#8a7060]">
-                    Every source, link, and note from the semester — organized so I can actually use them.
+                    Everything I need before I start writing. Sources, notes, and the argument I&apos;m building.
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-2">
                     <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
+                      #conformity-paper
+                    </span>
+                    <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
                       #psych101
                     </span>
                     <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
-                      #essay-sources
-                    </span>
-                    <span className="rounded-full bg-[#fef3e8] px-2.5 py-1 text-xs font-medium text-[#F69149]">
-                      #finals
+                      #due-friday
                     </span>
                   </div>
 
                   <div className="mt-5 grid gap-3">
                     <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
                       <p className="text-sm font-semibold text-[#553F28]">
-                        APA citation — Milgram obedience study (1963)
+                        Milgram (1963) — original obedience study
                       </p>
                       <p className="mt-1 text-sm text-[#8a7060]">
-                        Use for the ethics section of the conformity paper.
+                        Core source for the ethics argument. Cite in intro and conclusion.
                       </p>
                     </div>
 
                     <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
                       <p className="text-sm font-semibold text-[#553F28]">
-                        YouTube — Piaget&apos;s stages explained (the good one)
+                        YouTube — Crash Course: Social influence explained
                       </p>
                       <p className="mt-1 text-sm text-[#8a7060]">
-                        Way clearer than the textbook. Rewatch before the exam.
+                        Way clearer than the textbook. Good framing for the intro paragraph.
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-[#e8d8c8] bg-[#faf6f2] p-4">
+                      <p className="text-sm font-semibold text-[#553F28]">
+                        Prof&apos;s note — &ldquo;focus on the role of authority, not just obedience&rdquo;
+                      </p>
+                      <p className="mt-1 text-sm text-[#8a7060]">
+                        From office hours. This is probably what distinguishes a B from an A.
                       </p>
                     </div>
                   </div>
 
                   <div className="mt-4 flex items-center justify-between border-t border-[#e8d8c8] pt-4">
-                    <p className="text-xs text-[#8a7060]">6 sources saved</p>
+                    <p className="text-xs text-[#8a7060]">8 sources saved</p>
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ebf2f8] px-3 py-1.5 text-xs font-semibold text-[#4a7a9b]">
                       Copy vault context →
                     </span>
+                  </div>
+
+                  {/* AI output snippet */}
+                  <div className="mt-4 rounded-2xl border border-[#d8e8f5] bg-[#ebf2f8] p-4">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#4a7a9b]">
+                      Claude&apos;s response
+                    </p>
+                    <p className="text-sm leading-6 text-slate-700">
+                      &ldquo;Based on your sources, Milgram&apos;s findings suggest obedience is driven less by personal ethics than by perceived legitimate authority — a distinction your professor specifically flagged. Your intro could open with the authority framing rather than the obedience result to set that argument up from the start.&rdquo;
+                    </p>
                   </div>
                 </div>
               </div>
@@ -293,9 +312,6 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-slate-500">
-              Also used by researchers, writers, and teachers.
-            </p>
           </div>
         </section>
 

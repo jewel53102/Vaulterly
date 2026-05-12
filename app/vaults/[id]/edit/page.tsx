@@ -210,9 +210,51 @@ export default function EditVaultPage() {
 
         <main className="vault-page">
           <div className="vault-container-narrow">
-            <section className="vault-card">
-              <p className="vault-body">Loading vault...</p>
-            </section>
+            <div className="animate-pulse">
+              {/* Back link */}
+              <div className="vault-topbar">
+                <div className="h-8 w-28 rounded-xl bg-slate-200" />
+              </div>
+              {/* Header card */}
+              <section className="vault-card">
+                <div className="h-5 w-20 rounded-full bg-slate-200" />
+                <div className="mt-3 h-7 w-48 rounded-xl bg-slate-200" />
+                <div className="mt-2 h-4 w-full max-w-sm rounded bg-slate-200" />
+              </section>
+              {/* Form card */}
+              <section className="vault-card space-y-6">
+                {/* Vault name */}
+                <div>
+                  <div className="h-4 w-24 rounded bg-slate-200" />
+                  <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+                  <div className="mt-1.5 h-3 w-64 rounded bg-slate-200" />
+                </div>
+                {/* Description */}
+                <div>
+                  <div className="h-4 w-24 rounded bg-slate-200" />
+                  <div className="mt-2 h-28 w-full rounded-xl bg-slate-200" />
+                  <div className="mt-1.5 h-3 w-72 rounded bg-slate-200" />
+                </div>
+                {/* Category */}
+                <div>
+                  <div className="h-4 w-20 rounded bg-slate-200" />
+                  <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+                  <div className="mt-1.5 h-3 w-56 rounded bg-slate-200" />
+                </div>
+                {/* Visibility toggle */}
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="h-5 w-28 rounded bg-slate-200" />
+                  <div className="mt-2 h-3 w-full rounded bg-slate-200" />
+                  <div className="mt-1.5 h-3 w-4/5 rounded bg-slate-200" />
+                  <div className="mt-4 h-6 w-12 rounded-full bg-slate-200" />
+                </div>
+                {/* Actions */}
+                <div className="flex gap-3">
+                  <div className="h-10 w-28 rounded-xl bg-slate-200" />
+                  <div className="h-10 w-24 rounded-xl bg-slate-200" />
+                </div>
+              </section>
+            </div>
           </div>
         </main>
       </>

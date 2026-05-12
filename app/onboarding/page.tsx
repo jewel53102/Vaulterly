@@ -109,7 +109,7 @@ type StarterEntry = {
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [selectedVaultId, setSelectedVaultId] =

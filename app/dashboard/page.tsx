@@ -663,13 +663,27 @@ export default function DashboardPage() {
           </div>
 
           {loading ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-              <h2 className="text-xl font-semibold text-blue-500">
-                Loading your vaults...
-              </h2>
-              <p className="mt-2 text-slate-600">
-                Getting your saved collections ready.
-              </p>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="animate-pulse flex flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div className="h-5 w-16 rounded-full bg-slate-200" />
+                    <div className="h-5 w-20 rounded-full bg-slate-200" />
+                  </div>
+                  <div className="h-5 w-3/4 rounded-lg bg-slate-200" />
+                  <div className="mt-2 h-4 w-full rounded bg-slate-200" />
+                  <div className="mt-1.5 h-4 w-5/6 rounded bg-slate-200" />
+                  <div className="mt-1.5 h-4 w-2/3 rounded bg-slate-200" />
+                  <div className="mt-5 flex gap-2">
+                    <div className="h-5 w-14 rounded-full bg-slate-200" />
+                    <div className="h-5 w-16 rounded-full bg-slate-200" />
+                  </div>
+                  <div className="mt-auto flex gap-3 pt-5">
+                    <div className="h-10 flex-1 rounded-xl bg-slate-200" />
+                    <div className="h-10 flex-1 rounded-xl bg-slate-200" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : vaults.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
@@ -803,13 +817,22 @@ export default function DashboardPage() {
             </div>
 
             {followedVaultsLoading ? (
-              <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                <h2 className="text-xl font-semibold text-blue-500">
-                  Loading followed vaults...
-                </h2>
-                <p className="mt-2 text-slate-600">
-                  Finding public vaults from people you follow.
-                </p>
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="animate-pulse flex flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div className="h-5 w-16 rounded-full bg-slate-200" />
+                      <div className="h-5 w-20 rounded-full bg-slate-200" />
+                    </div>
+                    <div className="h-5 w-3/4 rounded-lg bg-slate-200" />
+                    <div className="mt-2 h-4 w-full rounded bg-slate-200" />
+                    <div className="mt-1.5 h-4 w-5/6 rounded bg-slate-200" />
+                    <div className="mt-1.5 h-4 w-2/3 rounded bg-slate-200" />
+                    <div className="mt-auto pt-5">
+                      <div className="h-10 w-full rounded-xl bg-slate-200" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : followedVaults.length === 0 ? (
               <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">

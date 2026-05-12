@@ -254,7 +254,53 @@ export default function AccountPage() {
     return (
       <main className="account-page">
         <div className="account-container">
-          <p className="account-help-text">Loading account...</p>
+          <div className="animate-pulse">
+            {/* Back link */}
+            <div className="mb-6 h-4 w-32 rounded bg-slate-200" />
+            {/* Header */}
+            <div className="mb-8">
+              <div className="h-8 w-40 rounded-xl bg-slate-200" />
+              <div className="mt-2 h-4 w-72 rounded bg-slate-200" />
+            </div>
+            {/* Public Profile card */}
+            <div className="account-card mb-4">
+              <div className="h-5 w-32 rounded bg-slate-200" />
+              <div className="mt-1 h-4 w-64 rounded bg-slate-200" />
+              <div className="mt-6 flex items-center gap-4">
+                <div className="h-14 w-14 rounded-full bg-slate-200" />
+                <div className="h-8 w-28 rounded-xl bg-slate-200" />
+              </div>
+              <div className="mt-5 h-4 w-24 rounded bg-slate-200" />
+              <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+              <div className="mt-4 h-4 w-16 rounded bg-slate-200" />
+              <div className="mt-2 h-24 w-full rounded-xl bg-slate-200" />
+              <div className="mt-4 h-4 w-20 rounded bg-slate-200" />
+              <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+              <div className="mt-5 h-9 w-36 rounded-xl bg-slate-200" />
+            </div>
+            {/* Email card */}
+            <div className="account-card mb-4">
+              <div className="h-5 w-16 rounded bg-slate-200" />
+              <div className="mt-1 h-4 w-56 rounded bg-slate-200" />
+              <div className="mt-5 h-4 w-16 rounded bg-slate-200" />
+              <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+              <div className="mt-3 h-9 w-28 rounded-xl bg-slate-200" />
+            </div>
+            {/* Security card */}
+            <div className="account-card mb-4">
+              <div className="h-5 w-20 rounded bg-slate-200" />
+              <div className="mt-1 h-4 w-60 rounded bg-slate-200" />
+              <div className="mt-5 h-4 w-28 rounded bg-slate-200" />
+              <div className="mt-2 h-10 w-full rounded-xl bg-slate-200" />
+              <div className="mt-3 h-9 w-36 rounded-xl bg-slate-200" />
+            </div>
+            {/* Danger card */}
+            <div className="account-card">
+              <div className="h-5 w-28 rounded bg-slate-200" />
+              <div className="mt-1 h-4 w-52 rounded bg-slate-200" />
+              <div className="mt-5 h-9 w-24 rounded-xl bg-slate-200" />
+            </div>
+          </div>
         </div>
       </main>
     )

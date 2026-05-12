@@ -9,6 +9,7 @@ import ExportVaultButton from "@/app/components/ExportVaultButton";
 import VaultEntrySearch from "@/app/components/VaultEntrySearch";
 import ShareButton from "@/app/components/ShareButton";
 import SharePromptBanner from "@/app/components/SharePromptBanner";
+import VaultVisitorCTA from "@/app/components/VaultVisitorCTA";
 
 type TagShape = { name: string }[] | { name: string } | null;
 
@@ -272,50 +273,11 @@ export default async function VaultPage({
 
         {/* Visitor CTA — prominent conversion banner for non-owners */}
         {vault.is_public && !isOwner && (
-          <section className="border-b border-slate-200 bg-white">
-            <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8">
-              <div className="flex flex-col gap-4 rounded-2xl border border-[#d8e8f5] bg-[#ebf2f8] p-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="font-semibold text-[#2c5f7a]">
-                    Save this vault to your account
-                  </p>
-                  <p className="mt-0.5 text-sm text-[#4a7a9b]">
-                    {user
-                      ? "Copy it to your vaults and use it as AI context for your own essays."
-                      : "Sign up free to save a copy and drop it into ChatGPT or Claude when you write."}
-                  </p>
-                </div>
-                <div className="flex shrink-0 gap-2">
-                  {user ? (
-                    <form action={duplicatePublicVault}>
-                      <input type="hidden" name="vaultId" value={vault.id} />
-                      <button
-                        type="submit"
-                        className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5a87ac]"
-                      >
-                        Save a copy
-                      </button>
-                    </form>
-                  ) : (
-                    <>
-                      <Link
-                        href={`/signup?next=/vaults/${vault.id}`}
-                        className="inline-flex items-center justify-center rounded-xl bg-[#779EBF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5a87ac]"
-                      >
-                        Sign up free
-                      </Link>
-                      <Link
-                        href={`/login?next=/vaults/${vault.id}`}
-                        className="inline-flex items-center justify-center rounded-xl border border-[#b8d4e8] bg-white px-4 py-2.5 text-sm font-semibold text-[#4a7a9b] shadow-sm transition hover:bg-[#ebf2f8]"
-                      >
-                        Log in
-                      </Link>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
+          <VaultVisitorCTA
+            vaultId={vault.id}
+            isLoggedIn={!!user}
+            duplicateAction={duplicatePublicVault}
+          />
         )}
 
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">

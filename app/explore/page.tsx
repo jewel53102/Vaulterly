@@ -10,7 +10,16 @@ export const metadata: Metadata = {
   title: "Browse Student Research Vaults",
   description:
     "Explore free research vaults built by students. Find organized sources, study materials, and notes by subject. Copy the structure for your own classes.",
+  alternates: { canonical: "/explore" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=Browse+Student+Research+Vaults&description=Explore+free+research+vaults+built+by+students.+Find+organized+sources+by+subject.+Copy+the+structure+for+your+own+classes.",
+        width: 1200,
+        height: 630,
+        alt: "Browse Student Research Vaults",
+      },
+    ],
     title: "Browse Student Research Vaults | Vaulterly",
     description:
       "Explore free research vaults built by students. Find organized sources, study materials, and notes by subject. Copy the structure for your own classes.",

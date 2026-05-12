@@ -31,6 +31,66 @@ function getTagNames(entry: SourceEntry): string[] {
   );
 }
 
+const FREE_VAULT_LIMIT = 3;
+
+type CreateVaultParams = {
+  name: string;
+  description: string | null;
+  category: string | null;
+  slug: string;
+  isPublic: boolean;
+};
+
+export async function createVault(
+  params: CreateVaultParams
+): Promise<{ vaultId: string } | { error: string }> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("plan")
+    .eq("id", user.id)
+    .maybeSingle<{ plan: string }>();
+
+  const plan = profile?.plan ?? "free";
+
+  if (plan === "free") {
+    const { count } = await supabase
+      .from("vaults")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if ((count ?? 0) >= FREE_VAULT_LIMIT) {
+      return { error: "upgrade_required" };
+    }
+  }
+
+  const { data: newVault, error } = await supabase
+    .from("vaults")
+    .insert({
+      user_id: user.id,
+      name: params.name,
+      description: params.description,
+      category: params.category,
+      slug: params.slug,
+      is_public: params.isPublic,
+    })
+    .select("id")
+    .single();
+
+  if (error || !newVault) {
+    return { error: error?.message ?? "Could not create vault." };
+  }
+
+  return { vaultId: newVault.id };
+}
+
 export async function duplicatePublicVault(formData: FormData) {
   const vaultId = String(formData.get("vaultId") || "");
 
@@ -91,6 +151,23 @@ export async function duplicatePublicVault(formData: FormData) {
     sourceVault.name?.trim() ||
     sourceVault.title?.trim() ||
     "Copied Vault";
+
+  const { data: copyProfile } = await supabase
+    .from("profiles")
+    .select("plan")
+    .eq("id", user.id)
+    .maybeSingle<{ plan: string }>();
+
+  if ((copyProfile?.plan ?? "free") === "free") {
+    const { count: vaultCount } = await supabase
+      .from("vaults")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if ((vaultCount ?? 0) >= FREE_VAULT_LIMIT) {
+      redirect("/pricing?reason=limit");
+    }
+  }
 
   const { data: newVault, error: newVaultError } = await supabase
     .from("vaults")

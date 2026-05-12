@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { useUsernameCheck } from '@/app/hooks/useUsernameCheck'
 
@@ -11,6 +11,15 @@ type Profile = {
   bio: string | null
   website: string | null
   avatar_url: string | null
+  plan: string | null
+}
+
+function UpgradeToast({ onUpgraded }: { onUpgraded: () => void }) {
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (searchParams.get('upgraded') === '1') onUpgraded()
+  }, [searchParams, onUpgraded])
+  return null
 }
 
 export default function AccountPage() {
@@ -25,8 +34,10 @@ export default function AccountPage() {
   const [avatarUrl, setAvatarUrl] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [plan, setPlan] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [portalLoading, setPortalLoading] = useState(false)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [toast, setToast] = useState('')
 
@@ -49,7 +60,7 @@ export default function AccountPage() {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('username, bio, website, avatar_url')
+        .select('username, bio, website, avatar_url, plan')
         .eq('id', user.id)
         .maybeSingle<Profile>()
 
@@ -57,6 +68,7 @@ export default function AccountPage() {
       setBio(profile?.bio || '')
       setWebsite(profile?.website || '')
       setAvatarUrl(profile?.avatar_url || '')
+      setPlan(profile?.plan || 'free')
       setLoading(false)
     }
 
@@ -221,6 +233,18 @@ export default function AccountPage() {
     showToast('Password updated.')
   }
 
+  async function openPortal() {
+    setPortalLoading(true)
+    const res = await fetch('/api/stripe/portal', { method: 'POST' })
+    const data = await res.json()
+    if (!res.ok || !data.url) {
+      showToast(data.error ?? 'Could not open billing portal. Please try again.')
+      setPortalLoading(false)
+      return
+    }
+    window.location.href = data.url
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
     router.push('/login')
@@ -261,6 +285,13 @@ export default function AccountPage() {
             <div className="mb-8">
               <div className="h-8 w-40 rounded-xl bg-slate-200" />
               <div className="mt-2 h-4 w-72 rounded bg-slate-200" />
+            </div>
+            {/* Subscription card */}
+            <div className="account-card mb-4">
+              <div className="h-5 w-28 rounded bg-slate-200" />
+              <div className="mt-1 h-4 w-72 rounded bg-slate-200" />
+              <div className="mt-5 h-6 w-20 rounded-full bg-slate-200" />
+              <div className="mt-4 h-9 w-40 rounded-xl bg-slate-200" />
             </div>
             {/* Public Profile card */}
             <div className="account-card mb-4">
@@ -308,6 +339,9 @@ export default function AccountPage() {
 
   return (
     <main className="account-page">
+      <Suspense fallback={null}>
+        <UpgradeToast onUpgraded={() => showToast("You're now on Pro. Welcome!")} />
+      </Suspense>
       {toast ? <div className="account-toast">{toast}</div> : null}
 
       <div className="account-container">
@@ -319,6 +353,58 @@ export default function AccountPage() {
           <h1>My Account</h1>
           <p>Manage your profile, login details, and account security.</p>
         </div>
+
+        <section className="account-card">
+          <h2>Subscription</h2>
+          <p>
+            {plan === 'founding'
+              ? 'You are a Founding Member — your rate is locked in forever.'
+              : plan === 'pro'
+              ? 'You are on the Pro plan with unlimited vaults.'
+              : 'You are on the Free plan (up to 3 vaults).'}
+          </p>
+
+          <div className="account-form-section">
+            <div className="flex items-center gap-3">
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
+                  plan === 'founding'
+                    ? 'bg-slate-900 text-white'
+                    : plan === 'pro'
+                    ? 'bg-[#ebf2f8] text-[#4a7a9b]'
+                    : 'bg-slate-100 text-slate-600'
+                }`}
+              >
+                {plan === 'founding' ? 'Founding Member' : plan === 'pro' ? 'Pro' : 'Free'}
+              </span>
+            </div>
+
+            {plan === 'free' ? (
+              <div className="mt-4">
+                <Link
+                  href="/pricing"
+                  className="button button-primary button-small"
+                >
+                  Upgrade to Pro
+                </Link>
+              </div>
+            ) : (
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={openPortal}
+                  disabled={portalLoading}
+                  className="button button-secondary button-small"
+                >
+                  {portalLoading ? 'Opening...' : 'Manage subscription'}
+                </button>
+                <p className="account-help-text">
+                  Cancel, change billing cycle, or update your payment method.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
 
         <section className="account-card">
           <h2>Public Profile</h2>

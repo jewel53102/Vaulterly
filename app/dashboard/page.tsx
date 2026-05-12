@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import AppHeader from '@/app/components/AppHeader'
+import CopyVaultButton from '@/app/components/CopyVaultLinkButton'
+import ShareButton from '@/app/components/ShareButton'
 
 type Vault = {
   id: string
@@ -98,6 +100,7 @@ export default function DashboardPage() {
   const [followedVaults, setFollowedVaults] = useState<FollowedVault[]>([])
   const [loading, setLoading] = useState(true)
   const [followedVaultsLoading, setFollowedVaultsLoading] = useState(true)
+  const [plan, setPlan] = useState<string>('free')
 
   const [progress, setProgress] = useState<OnboardingProgress>({
     hasVault: false,
@@ -119,6 +122,13 @@ export default function DashboardPage() {
         router.push('/login')
         return
       }
+
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', user.id)
+        .maybeSingle<{ plan: string }>()
+      setPlan(profileData?.plan ?? 'free')
 
       const { data: vaultData, error: vaultError } = await supabase
         .from('vaults')
@@ -379,12 +389,21 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href="/welcome"
-                    className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
-                  >
-                    Create New Vault
-                  </Link>
+                  {plan === 'free' && vaults.length >= 3 ? (
+                    <Link
+                      href="/pricing"
+                      className="inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600"
+                    >
+                      Upgrade to create more vaults
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/welcome"
+                      className="inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+                    >
+                      Create New Vault
+                    </Link>
+                  )}
 
                   <Link
                     href="/explore"
@@ -878,12 +897,22 @@ export default function DashboardPage() {
                         'A public vault from a creator you follow.'}
                     </p>
 
-                    <Link
-                      href={`/vaults/${vault.id}`}
-                      className="mt-auto inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
-                    >
-                      Open Vault
-                    </Link>
+                    <div className="mt-auto pt-5 space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        <Link
+                          href={`/vaults/${vault.id}`}
+                          className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+                        >
+                          View Vault
+                        </Link>
+                        <ShareButton
+                          url={`/vaults/${vault.id}`}
+                          label="Share"
+                          className="inline-flex items-center justify-center rounded-xl border border-[#d8e8f5] bg-[#ebf2f8] px-4 py-2.5 text-sm font-semibold text-[#4a7a9b] transition hover:bg-[#d8e8f5]"
+                        />
+                      </div>
+                      <CopyVaultButton vaultId={vault.id} isLoggedIn={true} compact />
+                    </div>
                   </article>
                 ))}
               </div>
@@ -902,12 +931,21 @@ export default function DashboardPage() {
               collections public when you’re ready to share them.
             </p>
 
-            <Link
-              href="/welcome"
-              className="mt-6 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-blue-500 transition hover:bg-slate-100"
-            >
-              Create New Vault
-            </Link>
+            {plan === 'free' && vaults.length >= 3 ? (
+              <Link
+                href="/pricing"
+                className="mt-6 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-amber-600 transition hover:bg-slate-100"
+              >
+                Upgrade to Pro →
+              </Link>
+            ) : (
+              <Link
+                href="/welcome"
+                className="mt-6 inline-flex items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-blue-500 transition hover:bg-slate-100"
+              >
+                Create New Vault
+              </Link>
+            )}
           </div>
         </section>
       </main>

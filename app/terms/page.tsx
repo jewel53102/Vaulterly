@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description: "The terms and conditions that govern your use of Vaulterly.",
   robots: { index: true, follow: true },
+  alternates: { canonical: "/terms" },
 };
 
 const EFFECTIVE_DATE = "11 May 2026";

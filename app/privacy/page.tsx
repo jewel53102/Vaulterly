@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How Vaulterly collects, uses, and protects your personal information.",
   robots: { index: true, follow: true },
+  alternates: { canonical: "/privacy" },
 };
 
 const EFFECTIVE_DATE = "11 May 2026";

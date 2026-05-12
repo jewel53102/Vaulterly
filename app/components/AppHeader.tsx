@@ -46,6 +46,10 @@ export default function AppHeader({
             Blog
           </Link>
 
+          <Link href="/pricing" className="button button-secondary button-small">
+            Pricing
+          </Link>
+
           {isLoggedIn ? (
             <>
               <Link href="/dashboard" className="button button-secondary button-small">

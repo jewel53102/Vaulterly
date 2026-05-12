@@ -1,6 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import AppHeaderAuth from "@/app/components/AppHeaderAuth";
 import { getAllPosts } from "@/lib/blog";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const categoryColors: Record<string, string> = {
   "AI Study Tips": "bg-[#ebf2f8] text-[#4a7a9b]",
@@ -45,6 +50,13 @@ export default function HomePage() {
                     className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
                   >
                     Browse student vaults
+                  </Link>
+
+                  <Link
+                    href="/pricing"
+                    className="inline-flex items-center justify-center text-sm font-medium text-slate-500 hover:text-slate-700 hover:underline"
+                  >
+                    See pricing →
                   </Link>
                 </div>
               </div>

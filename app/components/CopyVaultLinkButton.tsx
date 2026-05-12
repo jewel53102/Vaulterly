@@ -12,7 +12,7 @@ type CopyVaultButtonProps = {
 
 type SourceVault = {
   id: string;
-  title: string;
+  name: string;
   description: string | null;
   category: string | null;
 };
@@ -23,7 +23,8 @@ type SourceEntry = {
   url: string | null;
   description: string | null;
   notes?: string | null;
-  type?: string | null;
+  entry_type: string;
+  metadata_status: string;
 };
 
 export default function CopyVaultButton({ vaultId, isLoggedIn, compact = false }: CopyVaultButtonProps) {
@@ -53,9 +54,29 @@ export default function CopyVaultButton({ vaultId, isLoggedIn, compact = false }
         return;
       }
 
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("plan")
+        .eq("id", user.id)
+        .maybeSingle<{ plan: string }>();
+
+      const plan = profile?.plan ?? "free";
+
+      if (plan === "free") {
+        const { count } = await supabase
+          .from("vaults")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id);
+
+        if ((count ?? 0) >= 3) {
+          router.push("/pricing?reason=limit");
+          return;
+        }
+      }
+
       const { data: sourceVault, error: sourceVaultError } = await supabase
         .from("vaults")
-        .select("id,title,description,category")
+        .select("id,name,description,category")
         .eq("id", vaultId)
         .eq("is_public", true)
         .single<SourceVault>();
@@ -64,14 +85,34 @@ export default function CopyVaultButton({ vaultId, isLoggedIn, compact = false }
         throw new Error("Could not find this public vault.");
       }
 
+      const { data: existingCopies } = await supabase
+        .from("vaults")
+        .select("name")
+        .eq("user_id", user.id)
+        .like("name", `${sourceVault.name} (Copy%`);
+
+      const copyCount = existingCopies?.length ?? 0;
+      const copyName =
+        copyCount === 0
+          ? `${sourceVault.name} (Copy)`
+          : `${sourceVault.name} (Copy ${copyCount + 1})`;
+
+      const baseSlug = copyName
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+      const slug = `${baseSlug}-${Date.now().toString(36)}`;
+
       const { data: newVault, error: newVaultError } = await supabase
         .from("vaults")
         .insert({
           user_id: user.id,
-          title: `${sourceVault.title} (Copy)`,
+          name: copyName,
           description: sourceVault.description,
           category: sourceVault.category,
           is_public: false,
+          slug,
         })
         .select("id")
         .single<{ id: string }>();
@@ -82,7 +123,7 @@ export default function CopyVaultButton({ vaultId, isLoggedIn, compact = false }
 
       const { data: sourceEntries, error: entriesError } = await supabase
         .from("entries")
-        .select("id,title,url,description,notes,type")
+        .select("id,title,url,description,notes,entry_type,metadata_status")
         .eq("vault_id", vaultId)
         .returns<SourceEntry[]>();
 
@@ -101,7 +142,8 @@ export default function CopyVaultButton({ vaultId, isLoggedIn, compact = false }
               url: entry.url,
               description: entry.description,
               notes: entry.notes ?? null,
-              type: entry.type ?? "link",
+              entry_type: entry.entry_type,
+              metadata_status: entry.metadata_status,
             })),
           )
           .select("id,title")

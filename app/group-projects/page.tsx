@@ -6,7 +6,16 @@ export const metadata: Metadata = {
   title: "Shared Research Vault for Group Projects — One Link, Everyone's In",
   description:
     "Create a shared research vault for your group project. Add sources and notes, make it public, send one link — everyone has the same materials instantly.",
+  alternates: { canonical: "/group-projects" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=Shared+Research+Vault+for+Group+Projects&description=Create+a+shared+research+vault+for+your+group+project.+Send+one+link+%E2%80%94+everyone+has+the+same+materials+instantly.",
+        width: 1200,
+        height: 630,
+        alt: "Shared Research Vault for Group Projects",
+      },
+    ],
     title: "Shared Research Vault for Group Projects | Vaulterly",
     description:
       "Create a shared research vault for your group project. Add sources and notes, make it public, send one link — everyone has the same materials instantly.",

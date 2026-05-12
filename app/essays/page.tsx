@@ -6,7 +6,16 @@ export const metadata: Metadata = {
   title: "Research Organizer for Essays — Save Sources, Write Without Losing Them",
   description:
     "Save every source as you research, add notes on why it matters, and export your whole research vault into ChatGPT or Claude to write essays grounded in real citations.",
+  alternates: { canonical: "/essays" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=Research+Organizer+for+Essays&description=Save+every+source+as+you+research.+Export+your+vault+into+ChatGPT+or+Claude+to+write+essays+grounded+in+real+citations.",
+        width: 1200,
+        height: 630,
+        alt: "Research Organizer for Essays",
+      },
+    ],
     title: "Research Organizer for Essays | Vaulterly",
     description:
       "Save every source as you research, add notes on why it matters, and export your whole research vault into ChatGPT or Claude to write essays grounded in real citations.",

@@ -6,7 +6,16 @@ export const metadata: Metadata = {
   title: "How the AI Export Works",
   description:
     "See exactly how Vaulterly turns your saved research into AI-ready context. Works with ChatGPT, Claude, Gemini, and any AI that accepts text.",
+  alternates: { canonical: "/how-it-works" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=How+the+AI+Export+Works&description=See+exactly+how+Vaulterly+turns+your+saved+research+into+AI-ready+context.+Works+with+ChatGPT%2C+Claude%2C+and+Gemini.",
+        width: 1200,
+        height: 630,
+        alt: "How the AI Export Works",
+      },
+    ],
     title: "How the AI Export Works | Vaulterly",
     description:
       "See exactly how Vaulterly turns your saved research into AI-ready context. Works with ChatGPT, Claude, Gemini, and any AI that accepts text.",

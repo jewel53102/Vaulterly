@@ -7,7 +7,16 @@ export const metadata: Metadata = {
   title: "Student Study Tips & AI Writing Guides",
   description:
     "Practical guides for students: how to organise research, use ChatGPT without hallucinating sources, and write better essays with AI tools.",
+  alternates: { canonical: "/blog" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=Student+Study+Tips+%26+AI+Writing+Guides&description=Practical+guides+for+students+on+how+to+use+ChatGPT+without+hallucinating+sources+and+write+better+essays.",
+        width: 1200,
+        height: 630,
+        alt: "Student Study Tips & AI Writing Guides",
+      },
+    ],
     title: "Student Study Tips & AI Writing Guides | Vaulterly",
     description:
       "Practical guides for students: how to organise research, use ChatGPT without hallucinating sources, and write better essays with AI tools.",

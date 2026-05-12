@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
+import { createVault } from '@/app/actions'
 
 type Tag = {
   id: string
@@ -15,6 +16,7 @@ export default function WelcomePage() {
   const supabase = useMemo(() => createClient(), [])
 
   const [userId, setUserId] = useState('')
+  const [atLimit, setAtLimit] = useState(false)
   const [name, setName] = useState('')
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
@@ -35,6 +37,23 @@ export default function WelcomePage() {
       }
 
       setUserId(user.id)
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', user.id)
+        .maybeSingle<{ plan: string }>()
+
+      const plan = profile?.plan ?? 'free'
+
+      if (plan === 'free') {
+        const { count } = await supabase
+          .from('vaults')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+
+        if ((count ?? 0) >= 3) setAtLimit(true)
+      }
     }
 
     loadUser()
@@ -118,24 +137,25 @@ export default function WelcomePage() {
     const baseSlug = createSlug(cleanedName)
     const slug = `${baseSlug}-${Date.now().toString(36)}`
 
-    const { data: newVault, error: vaultError } = await supabase
-      .from('vaults')
-      .insert({
-        user_id: userId,
-        name: cleanedName,
-        description: description.trim() || null,
-        category: cleanedCategory || null,
-        slug,
-        is_public: isPublic,
-      })
-      .select('id')
-      .single()
+    const result = await createVault({
+      name: cleanedName,
+      description: description.trim() || null,
+      category: cleanedCategory || null,
+      slug,
+      isPublic,
+    })
 
-    if (vaultError || !newVault) {
+    if ('error' in result) {
       setSaving(false)
-      setMessage(vaultError?.message || 'Could not create vault.')
+      if (result.error === 'upgrade_required') {
+        setAtLimit(true)
+      } else {
+        setMessage(result.error)
+      }
       return
     }
+
+    const newVault = { id: result.vaultId }
 
     const tagNames = parseTags(tagInput)
 
@@ -168,6 +188,46 @@ export default function WelcomePage() {
 
     setSaving(false)
     router.push(`/vaults/${newVault.id}`)
+  }
+
+  if (atLimit) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
+        <div className="w-full max-w-xl">
+          <div className="mb-8">
+            <Link href="/" className="text-xl font-bold text-slate-950">
+              Vaulterly
+            </Link>
+          </div>
+          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm text-center">
+            <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+              Free plan limit reached
+            </span>
+            <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950">
+              You&apos;ve used all 3 free vaults
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              Upgrade to Pro for unlimited vaults — $7/month or $55/year.
+              Your existing vaults and all their entries are safe.
+            </p>
+            <Link
+              href="/pricing"
+              className="mt-6 inline-flex items-center justify-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
+            >
+              See pricing →
+            </Link>
+            <div className="mt-3">
+              <Link
+                href="/dashboard"
+                className="text-sm text-slate-500 hover:text-slate-700 hover:underline"
+              >
+                Back to dashboard
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   return (

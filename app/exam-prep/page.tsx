@@ -6,7 +6,16 @@ export const metadata: Metadata = {
   title: "Exam Prep Organiser — Build a Study Vault for Every Subject",
   description:
     "Save every lecture link, video, and study resource into one vault per subject. Copy your vault into ChatGPT to generate study guides, flashcard prompts, and practice questions from your actual materials.",
+  alternates: { canonical: "/exam-prep" },
   openGraph: {
+    images: [
+      {
+        url: "/api/og?title=Exam+Prep+Organiser&description=Save+every+lecture+link+and+study+resource+into+one+vault+per+subject.+Generate+study+guides+from+your+actual+materials.",
+        width: 1200,
+        height: 630,
+        alt: "Exam Prep Organiser",
+      },
+    ],
     title: "Exam Prep Organiser | Vaulterly",
     description:
       "Save every lecture link, video, and study resource into one vault per subject. Copy your vault into ChatGPT to generate study guides, flashcard prompts, and practice questions from your actual materials.",

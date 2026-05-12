@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 const EFFECTIVE_DATE = "11 May 2026";
-// TODO: Replace with your verified contact email before launch
-const CONTACT_EMAIL = "privacy@myvaulterly.com";
+const CONTACT_EMAIL = "info@vaulterly.com";
 
 export default function PrivacyPage() {
   return (

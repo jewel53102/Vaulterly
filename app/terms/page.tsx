@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 };
 
 const EFFECTIVE_DATE = "11 May 2026";
-// TODO: Replace with your verified contact email before launch
-const CONTACT_EMAIL = "legal@myvaulterly.com";
+const CONTACT_EMAIL = "info@vaulterly.com";
 
 export default function TermsPage() {
   return (
@@ -209,10 +208,11 @@ export default function TermsPage() {
           <section>
             <h2>11. Governing law</h2>
             <p>
-              {/* TODO: Update this clause to reflect your actual jurisdiction */}
-              These Terms are governed by and construed in accordance with applicable
-              law. Any disputes shall be resolved in the courts of the jurisdiction in
-              which we are incorporated.
+              These Terms are governed by and construed in accordance with the laws
+              of the State of Maryland, United States, without regard to its conflict
+              of law provisions. Any disputes shall be resolved in the state or federal
+              courts located in Maryland, USA, and you consent to the personal
+              jurisdiction of those courts.
             </p>
           </section>
 

@@ -263,6 +263,7 @@ export default async function ExplorePage({
     vaultMatchesSearch(vault, searchTerm, profileMap)
   );
 
+  // Pinned featured vault — change this ID to feature a different vault.
   const FEATURED_VAULT_ID = "8275131f-bc9d-4a3d-8a09-9049e8e67bd1";
 
   const featuredVault =

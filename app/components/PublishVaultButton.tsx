@@ -70,10 +70,14 @@ export default function PublishVaultButton({
       alert(
         "Your vault was submitted for review before becoming public."
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "vault_published", { status: "pending" });
     }
 
     if (result.status === "public") {
       alert("Your vault is now public.");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "vault_published", { status: "public" });
     }
 
     if (result.status === "private") {

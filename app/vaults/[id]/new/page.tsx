@@ -110,6 +110,9 @@ export default function NewEntryPage() {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).gtag?.("event", "entry_saved");
+
     router.push(`/vaults/${vaultId}`);
     router.refresh();
   }

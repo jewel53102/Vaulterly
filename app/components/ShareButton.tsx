@@ -22,6 +22,8 @@ export default function ShareButton({
         : url
 
     await navigator.clipboard.writeText(fullUrl)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window as any).gtag?.('event', 'vault_shared', { url })
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }

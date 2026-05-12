@@ -60,6 +60,8 @@ export default function SignupPage() {
         display_name: name,
         username: generateUsername(name),
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "sign_up", { method: "email" });
     }
 
     setSuccessMessage(

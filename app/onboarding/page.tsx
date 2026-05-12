@@ -277,6 +277,11 @@ export default function OnboardingPage() {
       .update({ onboarding_completed: true })
       .eq("id", user.id);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).gtag?.("event", "vault_created", { method: "onboarding" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).gtag?.("event", "onboarding_complete");
+
     setCreatedVaultId(vault.id);
     setIsSaving(false);
     setStep(3);

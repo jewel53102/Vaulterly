@@ -14,6 +14,7 @@ export default function SiteFooter() {
             <Link href="/how-it-works" className="hover:text-slate-900">How it works</Link>
             <Link href="/explore" className="hover:text-slate-900">Explore</Link>
             <Link href="/pricing" className="hover:text-slate-900">Pricing</Link>
+            <Link href="/for-researchers" className="hover:text-slate-900">For Researchers</Link>
             <Link href="/privacy" className="hover:text-slate-900">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-slate-900">Terms of Service</Link>
           </nav>

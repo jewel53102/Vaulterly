@@ -50,6 +50,10 @@ export default function AppHeader({
             Pricing
           </Link>
 
+          <Link href="/for-researchers" className="button button-secondary button-small">
+            For Researchers
+          </Link>
+
           {isLoggedIn ? (
             <>
               <Link href="/dashboard" className="button button-secondary button-small">

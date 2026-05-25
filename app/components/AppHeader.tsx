@@ -26,11 +26,14 @@ export default function AppHeader({
           <Link href="/" className="app-header-brand">
             <Image
               src="/Vaulterly-logo.png"
-              alt="Vaulterly"
-              width={48}
-              height={48}
+              alt="Vaulterly logo"
+              width={36}
+              height={36}
             />
-            {title ? <p className="app-header-subtitle">{title}</p> : null}
+            <div>
+              <span className="brand-text">Vaulterly</span>
+              {title ? <p className="app-header-subtitle">{title}</p> : null}
+            </div>
           </Link>
 
           {subtitle ? <p className="app-header-meta">{subtitle}</p> : null}

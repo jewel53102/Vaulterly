@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import UserMenu from "./UserMenu";
 
 type AppHeaderProps = {
@@ -23,15 +24,13 @@ export default function AppHeader({
       <div className="container app-header-inner">
         <div className="app-header-left">
           <Link href="/" className="app-header-brand">
-            <div className="brand-mark brand-mark-small" aria-hidden="true">
-              <span className="brand-safe">
-                <span className="brand-brain">◎</span>
-              </span>
-            </div>
-            <div>
-              <span className="brand-text">Vaulterly</span>
-              {title ? <p className="app-header-subtitle">{title}</p> : null}
-            </div>
+            <Image
+              src="/Vaulterly-logo.png"
+              alt="Vaulterly"
+              width={48}
+              height={48}
+            />
+            {title ? <p className="app-header-subtitle">{title}</p> : null}
           </Link>
 
           {subtitle ? <p className="app-header-meta">{subtitle}</p> : null}

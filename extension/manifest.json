@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Vaulterly",
+  "version": "1.0.0",
+  "description": "Save any source to a Vaulterly vault in one click.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://waujrrykwyodjqnhxzbl.supabase.co/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Save to Vaulterly"
+  },
+  "icons": {
+    "128": "icons/logo.png"
+  }
+}

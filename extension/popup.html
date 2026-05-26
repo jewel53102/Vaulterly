@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vaulterly</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="brand">
+      <img src="icons/logo.png" alt="" class="brand-logo" onerror="this.style.display='none'">
+      <span class="brand-name">Vaulterly</span>
+    </div>
+    <button id="btn-signout" class="btn-link" style="display:none">Sign out</button>
+  </header>
+
+  <!-- Login -->
+  <div id="view-login" class="view">
+    <p class="view-hint">Sign in to save sources to your vaults.</p>
+    <div class="field">
+      <label class="label" for="email">Email</label>
+      <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label class="label" for="password">Password</label>
+      <input class="input" type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div id="login-error" class="error-msg" style="display:none"></div>
+    <button id="btn-login" class="btn-primary">Sign In</button>
+    <p class="view-hint" style="margin-top:10px">
+      No account? <a href="https://myvaulterly.com/signup" target="_blank">Sign up free →</a>
+    </p>
+  </div>
+
+  <!-- Loading -->
+  <div id="view-loading" class="view" style="display:none">
+    <div class="spinner"></div>
+    <p class="view-hint">Loading…</p>
+  </div>
+
+  <!-- Save -->
+  <div id="view-save" class="view" style="display:none">
+    <div class="field">
+      <label class="label" for="entry-title">Title</label>
+      <input class="input" type="text" id="entry-title" placeholder="Page title">
+    </div>
+    <div class="field">
+      <label class="label">URL</label>
+      <div class="url-display" id="entry-url"></div>
+    </div>
+    <div class="field">
+      <label class="label" for="vault-select">Save to vault</label>
+      <select class="input" id="vault-select"></select>
+    </div>
+    <div class="field">
+      <label class="label" for="entry-note">
+        Note <span class="optional">optional</span>
+      </label>
+      <textarea class="input" id="entry-note" placeholder="Why are you saving this?" rows="2"></textarea>
+    </div>
+    <div id="save-error" class="error-msg" style="display:none"></div>
+    <button id="btn-save" class="btn-primary">Save to Vault</button>
+  </div>
+
+  <!-- Success -->
+  <div id="view-success" class="view" style="display:none">
+    <div class="success-icon">✓</div>
+    <p class="success-title">Saved!</p>
+    <p class="success-detail" id="success-detail"></p>
+    <div class="success-actions">
+      <a id="link-vault" href="#" target="_blank" class="btn-secondary">View Vault</a>
+      <button id="btn-save-another" class="btn-primary">Save Another</button>
+    </div>
+  </div>
+
+  <!-- No-URL fallback -->
+  <div id="view-nourl" class="view" style="display:none">
+    <p class="view-hint" style="text-align:center;padding:20px 0">
+      Open a webpage first, then click the Vaulterly icon to save it.
+    </p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

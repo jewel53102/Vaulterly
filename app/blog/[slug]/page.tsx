@@ -54,6 +54,9 @@ const categoryColors: Record<string, string> = {
   "AI Study Tips": "bg-[#ebf2f8] text-[#4a7a9b]",
   "Study Skills": "bg-emerald-50 text-emerald-700",
   Tools: "bg-amber-50 text-amber-700",
+  "Study Tips": "bg-violet-50 text-violet-700",
+  "Writing Workflow": "bg-sky-50 text-sky-700",
+  "AI Writing": "bg-[#ebf2f8] text-[#4a7a9b]",
 };
 
 export default async function BlogPostPage({ params }: Props) {

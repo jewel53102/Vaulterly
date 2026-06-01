@@ -37,6 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@MyVaulterly",
     title: "Vaulterly — Free Research Organizer for Students",
     description:
       "Save your sources, notes, and links in one vault. Organize by class or project. Drop your research into ChatGPT or Claude to write better essays. Free.",

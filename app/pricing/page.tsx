@@ -33,10 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-// TODO: Set this to your actual launch date before going live.
-// Founding Member pricing is shown until this date.
-// Format: ISO 8601 — e.g. "2026-06-01T00:00:00Z"
-const LAUNCH_DEADLINE = "2026-06-14T00:00:00Z";
+const LAUNCH_DEADLINE = "2026-06-23T00:00:00Z";
 
 const FREE_FEATURES = [
   "Up to 3 vaults",
